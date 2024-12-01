@@ -60,7 +60,7 @@
                     class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     disabled value="{{ $employee->email }}" />
                 <label for="email"
-                    class="peer-focus:font-medium absolute text-sm duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 blue-color">
+                   class="peer-focus:font-medium absolute text-sm duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 blue-color">
                     {{ __('Email Address') }}
                 </label>
             </div>
@@ -68,10 +68,9 @@
         <div class="w-1/3 px-3">
             <div class="relative w-full h-full mx-auto">
                 @if ($employee->profile_image)
-                    <img class="w-1/2 h-auto object-cover" src="{{ asset('storage/app/public/' . $employee->profile_image) }}" alt="Profile Image" class="object-cover w-full h-full">
+                    <img class="w-1/2 h-auto object-cover" src="{{url('storage/app/public/'.$employee->profile_image) }}" alt="Profile Image" class="object-cover w-full h-full">
                 @else
-                    <img class="w-1/2 h-auto object-cover" src="{{ Vite::asset('resources/images/default-avatar.jpg') }}" alt="Profile Image" class="object-cover w-full h-full">
-                @endif
+                    <img class="w-1/2 h-auto object-cover" src="{{ Vite::asset('resources/images/default-avatar.jpg') }}" alt="Profile Image" class="object-cover w-full h-full">                @endif
             </div>
         </div>
     </div>

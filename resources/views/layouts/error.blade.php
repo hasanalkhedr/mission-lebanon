@@ -123,82 +123,7 @@
                             </ul>
                         </li>
                         <hr />
-                        <!-- My Profile Item -->
-                        <li>
-                            <a href="{{ route('employees.show', auth()->user()->employee) }}"
-                                class="flex items-center mx-2 px-2 py-2 text-white rounded-lg transition duration-75 group hover:bg-blue-500">
-                                <span class="mx-2 font-medium">{{ __('Mon Profil') }}</span>
-                            </a>
-                        </li>
-                        <hr />
-                        @if (auth()->user()->employee->role !== 'employee')
-                            <!-- Calender Item -->
-                            <li>
-                                <a href="#"
-                                    class="flex items-center mx-2 px-2 py-2 text-white rounded-lg transition duration-75 group hover:bg-blue-500">
-                                    <span class="mx-2 font-medium">{{ __('Calendrier') }}</span>
-                                </a>
-                            </li>
-                            <hr />
-                            <!-- Reports Item -->
-                            <li>
-                                <a href="#"
-                                    class="flex items-center mx-2 px-2 py-2 text-white rounded-lg transition duration-75 group hover:bg-blue-500">
-                                    <span class="mx-2 font-medium">{{ __('Rapports') }}</span>
-                                </a>
-                            </li>
-                            <hr />
-                        @endif
-                        <!-- Settings Menu -->
-                        @if (auth()->user()->employee->role != 'employee')
-                            <li>
-                                <button type="button"
-                                    class="flex items-center mx-2 p-2 w-full text-base font-normal text-white rounded-lg transition duration-75 group hover:bg-blue-500"
-                                    style="width: -webkit-fill-available;" aria-controls="dropdown-settings"
-                                    data-collapse-toggle="dropdown-settings">
-                                    <span class="flex-1 mx-2 text-left font-medium text-white"
-                                        sidebar-toggle-item>{{ __('Settings') }}</span>
-                                    {{-- <svg sidebar-toggle-item class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                    clip-rule="evenodd"></path>
-                            </svg> --}}
-                                </button>
-                                <ul id="dropdown-settings-" class="py-2 space-y-2 mx-2">
-                                    <li>
-                                        <a class="flex items-center mx-2 px-2 py-2 text-white rounded-lg transition duration-75 group hover:bg-blue-500"
-                                            href="{{ route('baremes.index') }}">
-                                            <span class="mx-2 font-medium">{{ __('Baremes') }}</span>
-                                        </a>
-                                    </li>
-                                    {{-- @unless (auth()->user()->hasExactRoles('employee')) --}}
-                                    <li>
-                                        <a class="flex items-center mx-2 px-2 py-2 text-white rounded-lg transition duration-75 group hover:bg-blue-500"
-                                            href="{{ route('departments.index') }}">
-                                            <span class="mx-2 font-medium">{{ __('Departments') }}</span>
-                                        </a>
 
-                                    </li>
-                                    {{-- @endunless --}}
-                                    {{-- @unless (auth()->user()->hasExactRoles('employee') && auth()->user()->is_supervisor == false) --}}
-                                    <li>
-                                        <a class="flex items-center mx-2 px-2 py-2 text-white rounded-lg transition duration-75 group hover:bg-blue-500"
-                                            href="{{ route('employees.index') }}">
-                                            <span class="mx-2 font-medium">{{ __('Users') }}</span>
-                                        </a>
-                                    </li>
-                                    {{-- @endunless --}}
-                                    {{-- <li>
-                                <a class="flex items-center mx-2 px-2 py-2 text-white rounded-lg transition duration-75 group hover:bg-blue-500"
-                                    href="#">
-                                    <span class="mx-2 font-medium">{{ __('Signatures') }}</span>
-                                </a>
-                            </li> --}}
-                                </ul>
-                            </li>
-                            <hr />
-                        @endif
                     </ul>
                 </nav>
             </aside>
@@ -300,84 +225,7 @@
                             </li>
                         </ul>
                     </li>
-                    <hr />
-                    <!-- My Profile Item -->
-                    <li>
-                        <a href="{{ route('employees.show', auth()->user()->employee) }}"
-                            class="flex items-center mx-2 px-2 py-2 text-white rounded-lg transition duration-75 group hover:bg-blue-500">
-                            <span class="mx-2 font-medium">{{ __('Mon Profil') }}</span>
-                        </a>
-                    </li>
-                    <hr />
-                    @if (auth()->user()->employee->role !== 'employee')
-                        <!-- Calender Item -->
-                        <li>
-                            <a href="#"
-                                class="flex items-center mx-2 px-2 py-2 text-white rounded-lg transition duration-75 group hover:bg-blue-500">
-                                <span class="mx-2 font-medium">{{ __('Calendrier') }}</span>
-                            </a>
-                        </li>
-                        <hr />
-                        <!-- Reports Item -->
-                        <li>
-                            <a href="#"
-                                class="flex items-center mx-2 px-2 py-2 text-white rounded-lg transition duration-75 group hover:bg-blue-500">
-                                <span class="mx-2 font-medium">{{ __('Rapports') }}</span>
-                            </a>
-                        </li>
-                        <hr />
-                    @endif
-                    <!-- Settings Menu -->
-                    @if (auth()->user()->employee->role != 'employee')
-                        <li>
-                            <button type="button"
-                                class="flex items-center mx-2 p-2 w-full text-base font-normal text-white rounded-lg transition duration-75 group hover:bg-blue-500"
-                                style="width: -webkit-fill-available;" aria-controls="dropdown-settings"
-                                data-collapse-toggle="dropdown-settings">
-                                <span class="flex-1 mx-2 text-left font-medium text-white"
-                                    sidebar-toggle-item>{{ __('Settings') }}</span>
-                                {{-- <svg sidebar-toggle-item class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                    clip-rule="evenodd"></path>
-                            </svg> --}}
-                            </button>
-                            <ul id="dropdown-settings-" class="py-2 space-y-2 mx-2">
-                                <li>
-                                    <a class="flex items-center mx-2 px-2 py-2 text-white rounded-lg transition duration-75 group hover:bg-blue-500"
-                                        href="{{ route('baremes.index') }}">
-                                        <span class="mx-2 font-medium">{{ __('Baremes') }}</span>
-                                    </a>
-                                </li>
-                                {{-- @unless (auth()->user()->hasExactRoles('employee')) --}}
-                                <li>
-                                    <a class="flex items-center mx-2 px-2 py-2 text-white rounded-lg transition duration-75 group hover:bg-blue-500"
-                                        href="{{ route('departments.index') }}">
-                                        <span class="mx-2 font-medium">{{ __('Departments') }}</span>
-                                    </a>
-
-                                </li>
-                                {{-- @endunless --}}
-                                {{-- @unless (auth()->user()->hasExactRoles('employee') && auth()->user()->is_supervisor == false) --}}
-                                <li>
-                                    <a class="flex items-center mx-2 px-2 py-2 text-white rounded-lg transition duration-75 group hover:bg-blue-500"
-                                        href="{{ route('employees.index') }}">
-                                        <span class="mx-2 font-medium">{{ __('Users') }}</span>
-                                    </a>
-                                </li>
-                                {{-- @endunless --}}
-                                {{-- <li>
-                                <a class="flex items-center mx-2 px-2 py-2 text-white rounded-lg transition duration-75 group hover:bg-blue-500"
-                                    href="#">
-                                    <span class="mx-2 font-medium">{{ __('Signatures') }}</span>
-                                </a>
-                            </li> --}}
-                            </ul>
-                        </li>
-                        <hr />
-                    @endif
-                </ul>
+  </ul>
             </nav>
         </div>
         <!-- Header and Content -->
@@ -386,17 +234,10 @@
 
                 <nav class="w-full bg-white border-b-2 border-indigo-600 flex justify-between">
                     <div class="flex flex-col py-2">
-                        <div class="px-2 text-xl font-bold text-black">
-                            {{ auth()->user()->employee->first_name }} {{ auth()->user()->employee->last_name }}
                         </div>
-                        <div class="px-2  text-md italic text-black">
-                            {{-- (implode(' | ', auth()->user()->getRoleNamesCustom())) --}}
-                            {{ config('globals.roles.' . auth()->user()->employee->role) }}
-                        </div>
-                    </div>
                     <div class="flex mx-2">
                         <div class="py-3 pr-6 text-xl font-bold">
-                            <livewire:megaphone />
+                          
                         </div>
 
                         <div class="py-6 text-xl font-bold text-black">

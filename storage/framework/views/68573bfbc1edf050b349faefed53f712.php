@@ -1,0 +1,2 @@
+<input <?php echo e($attributes->merge(['class'=>'appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white', 'readonly'=>'true', 'type'=>'text'])); ?>>
+<?php /**PATH /srv/mission-order-app/resources/views/components/readonly-text-input.blade.php ENDPATH**/ ?>
