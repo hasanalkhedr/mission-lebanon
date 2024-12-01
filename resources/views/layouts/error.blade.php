@@ -237,7 +237,10 @@
                         </div>
                     <div class="flex mx-2">
                         <div class="py-3 pr-6 text-xl font-bold">
+<<<<<<< HEAD
                           
+=======
+>>>>>>> 129e0d86a05bddbc737ab0dff1bef2e687823a9e
                         </div>
 
                         <div class="py-6 text-xl font-bold text-black">
