@@ -34,9 +34,10 @@ class CalendarController extends Controller
         }
 
         foreach ($missions as $mission) {
-            $e = $mission->employee;
+        $e = $mission->employee;
             $b = $mission->bareme;
-            $title = "Employee: $e->first_name $e->last_name ,\nLocation:  $b->pays ,\nStatus: $mission->status,\nObjet: $mission->purpose ";
+$stat = __($mission->status);
+            $title = "Employé: $e->first_name $e->last_name ,\nPays:  $b->pays ,\nStatut: $stat, \nObjet: $mission->purpose ";
             $events[] = [
                 'title' => $title,
                 'start' => $mission->start_date,
@@ -48,7 +49,8 @@ class CalendarController extends Controller
         foreach ($tournees as $tournee) {
             $e = $tournee->employee;
             $b = $tournee->bareme;
-            $title = "Employee: $e->first_name $e->last_name ,\nLocation:  $b->pays ,\nStatus: $tournee->status,\nObjet: $tournee->purpose ";
+$stat = __($tournee->status);
+            $title = "Employé: $e->first_name $e->last_name ,\nPays:  $b->pays ,\nStatut:$stat, \nObjet: $tournee->purpose ";
             $events[] = [
                 'title' => $title,
                 'start' => $tournee->start_date,

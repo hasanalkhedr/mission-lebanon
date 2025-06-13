@@ -1,3 +1,6 @@
+@php
+    use App\Models\Department;
+@endphp
 @extends('layouts.app')
 
 @section('title', __('Memoire'))
@@ -18,7 +21,7 @@
                         {{ __('Mission #') }}
                     </th>
                     <th @click="sortByColumn" scope="col" class="cursor-pointer py-3 px-6 blue-color">
-                        {{ __('Employée') }}
+                        {{ __('Employé') }}
                     </th>
                     {{-- <th @click="sortByColumn" scope="col" class="cursor-pointer py-3 px-6 blue-color">
                         {{ __('Objet') }}
@@ -30,7 +33,7 @@
                         {{ __('Lieu de la mission') }}
                     </th>
                     <th @click="sortByColumn" scope="col" class="cursor-pointer py-3 px-6 blue-color">
-                        {{ __('Début le') }}
+                        {{ __('Débute le') }}
                     </th>
                     <th @click="sortByColumn" scope="col" class="cursor-pointer py-3 px-6 blue-color">
                         {{ __('S’achève le') }}
@@ -39,7 +42,7 @@
                         {{ __('Statut') }}
                     </th>
                     {{-- @if (auth()->user()->hasRole('human_resource')) --}}
-                    <th colspan="2" scope="col" class="py-3 px-6 blue-color text-center">Actions des
+                    <th colspan="2" scope="col" class="py-3 px-6 blue-color text-center">Actions 
                         {{ config('globals.roles.'.auth()->user()->employee->role) }}
                     </th>
                 </tr>
@@ -115,8 +118,12 @@
                             @break
 
                             @case('sup_approve')
-                                @if (auth()->user()->employee->role === 'supervisor' &&
-                                        auth()->user()->employee->department_id === $tournee->employee->department_id)
+@if (
+                                        (auth()->user()->employee->role === 'supervisor') &&
+                                            in_array(
+                                                $tournee->employee->department_id,
+                                                Department::where('manager_id', Auth::user()->employee->id)->pluck('id')->toArray()))
+
                                     <td class="text-center px-0 py-1 border-b">
                                         <button
                                             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-1 py-1 text-center hover:text-gray-900"

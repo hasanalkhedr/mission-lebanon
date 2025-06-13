@@ -14,7 +14,7 @@
             </div>
             <div class="w-1/3 px-3">
                 <x-label>
-                    Date le Ordre:<span class="text-red-500">*</span>
+                    Date d'ordre de mission:<span class="text-red-500">*</span>
                 </x-label>
                 <x-date-time-input
                     class="appearance-none block h-12 w-full bg-white text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
@@ -41,7 +41,7 @@
             </div>
             <div class="w-1/2 px-3">
                 <x-label>
-                    Fonction
+                    Fonction administrative
                 </x-label>
                 <x-readonly-text-input value="{{ $missionOrder->employee->position }}" />
             </div>
@@ -115,13 +115,20 @@
                             {{ $missionOrder->bareme->pays }}
                             ({{ $missionOrder->bareme->currency }})
                         </option>
-                    @else
+@elseif (in_array(
+                            $missionOrder->bareme->id,
+                            array_column(App\Models\Bareme::where('pays', 'like', '%LIBAN%')->get('id')->toArray(), 'id')))
+                        <option value="{{ $missionOrder->bareme->id }}">
+                            {{ $missionOrder->bareme->pays }}
+                            ({{ $missionOrder->bareme->currency }})
+                        </option> 
+                   @else
                         <option value="{{ $missionOrder->bareme->id }}">
                             {{ $missionOrder->bareme->pays }}
                             (Montant:{{ $missionOrder->bareme->pays_per_day . ' ' . $missionOrder->bareme->currency }} /
                             Repas:{{ $missionOrder->bareme->meal_cost }} /
                             Hebergement:{{ $missionOrder->bareme->accomodation_cost }})
-                        </option>
+                        </option>/
                     @endif
                 </x-disabled-select-input>
             </div>
@@ -204,7 +211,7 @@
                                     <div>
                                         <button name="action" value="submit"
                                             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
-                                            data-modal-toggle="draftOrSubmitModal">{{ __('Submit Mission') }}
+                                            data-modal-toggle="draftOrSubmitModal">{{ __('Submit Memoire') }}
                                         </button>
                                     </div>
                                 </div>

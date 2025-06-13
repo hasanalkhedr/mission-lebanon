@@ -15,12 +15,15 @@ class TourneeExpenseController extends Controller
         $tournee = Tournee::find($request->input('mission_order_id'));
         $request->validate([
             'tournee_id' => 'required',
-            'amount' => 'required|numeric',
+            'amount' => 'required|decimal:0,3',
             'currency' => 'required',
             'expense_date' => 'required|date|after_or_equal:'.$tournee->start_date.'|before_or_equal:'.$tournee->end_date,
             'description' => 'required',
             'expense_document' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+        ],[
+'expense_date.after_or_equal'=>'Le champ date de dépense doit ètre une date postérieure ou égale à :date',
+'expense_date.before_or_equal'=>'Le champ date de dépense doit ètre une date antérieure ou égale à :date'
+]);
 
         $expense = TourneeExpense::create($request->all());
         if ($request->hasFile('expense_document')) {
@@ -39,13 +42,16 @@ class TourneeExpenseController extends Controller
     public function update(Request $request, TourneeExpense $expense)
     {
         $request->validate([
-            'amount' => 'required|numeric',
+            'amount' => 'required|decimal:0,3',
             'currency' => 'required',
             'expense_date' => 'required|date|after_or_equal:'.$expense->tournee->start_date.'|before_or_equal:'.$expense->tournee->end_date,
 
             'description' => 'required',
             'expense_document' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+        ],[
+'expense_date.after_or_equal' => 'Le champ date de dépense doit ètre une date postérieure ou égale à :date',
+'expense_date.before_or_equal' => 'Le champ date de dépense doit ètre une date antérieure ou égale à :date'
+]);
 
         $expense->update($request->all());
         if ($request->hasFile('expense_document')) {

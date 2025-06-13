@@ -14,12 +14,14 @@ class ExpenseController extends Controller
         $missionOrder = MissionOrder::find($request->input('mission_order_id'));
         $request->validate([
             'mission_order_id' => 'required',
-            'amount' => 'required|numeric',
+            'amount' => 'required|decimal:0,3',
             'currency' => 'required',
             'expense_date' => 'required|date|after_or_equal:'.$missionOrder->start_date.'|before_or_equal:'.$missionOrder->end_date,
             'description' => 'required',
             'expense_document' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+        ],
+['expense_date.after_or_equal'=>'Le champ date de dépense doit ètre une date postérieure ou égale à :date',
+'expense_date.before_or_equal'=>'Le champ date de dépense doit ètre une date antérieure ou égale à :date']);
 
         $expense = Expense::create($request->all());
         if ($request->hasFile('expense_document')) {
@@ -38,12 +40,17 @@ class ExpenseController extends Controller
     public function update(Request $request, Expense $expense)
     {
         $request->validate([
-            'amount' => 'required|numeric',
+            'amount' => 'required|decimal:0,3',
             'currency' => 'required',
             'expense_date' => 'required|date|after_or_equal:'.$expense->missionOrder->start_date.'|before_or_equal:'.$expense->missionOrder->end_date,
             'description' => 'required',
             'expense_document' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+        ],
+[
+'expense_date.after_or_equal'=>'Le champ date de dépense doit ètre une date postérieure ou égale à :date',
+'expense_date.before_or_equal'=>'Le champ date de dépense doit ètre une date antérieure ou égale à :date'
+]
+);
 
         $expense->update($request->all());
         if ($request->hasFile('expense_document')) {

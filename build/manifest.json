@@ -1,0 +1,48 @@
+{
+  "resources/images/blank-expense.jpg": {
+    "file": "assets/blank-expense-COjs34yx.jpg",
+    "src": "resources/images/blank-expense.jpg"
+  },
+  "resources/images/browse-image.png": {
+    "file": "assets/browse-image-zblQP0IT.png",
+    "src": "resources/images/browse-image.png"
+  },
+  "resources/images/default-avatar.jpg": {
+    "file": "assets/default-avatar-k0tIthNs.jpg",
+    "src": "resources/images/default-avatar.jpg"
+  },
+  "resources/images/favicon32.png": {
+    "file": "assets/favicon32-DcNAvn7t.png",
+    "src": "resources/images/favicon32.png"
+  },
+  "resources/images/login-image-.png": {
+    "file": "assets/login-image--BFKesiTW.png",
+    "src": "resources/images/login-image-.png"
+  },
+  "resources/images/login-image.jpg": {
+    "file": "assets/login-image-u3AoP_hy.jpg",
+    "src": "resources/images/login-image.jpg"
+  },
+  "resources/images/logo-IFL.png": {
+    "file": "assets/logo-IFL-aMQikWSJ.png",
+    "src": "resources/images/logo-IFL.png"
+  },
+  "resources/images/ok.png": {
+    "file": "assets/ok-ChCU6vnZ.png",
+    "src": "resources/images/ok.png"
+  },
+  "resources/images/reject.png": {
+    "file": "assets/reject-CWunlZ41.png",
+    "src": "resources/images/reject.png"
+  },
+  "resources/images/review.png": {
+    "file": "assets/review-Bvyp8n23.png",
+    "src": "resources/images/review.png"
+  },
+  "resources/js/app.js": {
+    "file": "assets/main-CEsE5a7F.js",
+    "name": "main",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  }
+}
