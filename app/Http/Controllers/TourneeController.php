@@ -21,20 +21,20 @@ class TourneeController extends Controller
             case 'employee':
                 $tournees = Tournee::where('employee_id', '=', auth()->user()->employee->id)->when($search, function ($query, $search) {
                     return $query->where('order_number', 'like', '%' . $search . '%')->orWhere('purpose', 'like', '%' . $search . '%');
-                })->paginate(10);
+                })->orderBy('id','desc')->paginate(10);
                 break;
             case 'supervisor':
                 $tournees = Tournee::whereHas('employee', function ($query) {
                     $query->where('department_id', auth()->user()->employee->department_id);
                 })->when($search, function ($query, $search) {
                     return $query->where('order_number', 'like', '%' . $search . '%')->orWhere('purpose', 'like', '%' . $search . '%');
-                })->paginate(10);
+                })->orderBy('id','desc')->paginate(10);
                 break;
             case 'hr':
             case 'sg':
                 $tournees = Tournee::when($search, function ($query, $search) {
                     return $query->where('order_number', 'like', '%' . $search . '%')->orWhere('purpose', 'like', '%' . $search . '%');
-                })->paginate(10);
+                })->orderBy('id','desc')->paginate(10);
                 break;
             default:
                 $tournees = null;
@@ -245,20 +245,20 @@ class TourneeController extends Controller
                 $tournees = Tournee::where('employee_id', '=', auth()->user()->employee->id)
                     ->where('status', 'like', 'approved')->when($search, function ($query, $search) {
                         return $query->where('order_number', 'like', '%' . $search . '%')->orWhere('purpose', 'like', '%' . $search . '%');
-                    })->paginate(10);
+                    })->orderBy('id','desc')->paginate(10);
                 break;
             case 'supervisor':
                 $tournees = Tournee::whereHas('employee', function ($query) {
                     $query->where('department_id', auth()->user()->employee->department_id);
                 })->where('status', 'like', 'approved')->when($search, function ($query, $search) {
                     return $query->where('order_number', 'like', '%' . $search . '%')->orWhere('purpose', 'like', '%' . $search . '%');
-                })->paginate(10);
+                })->orderBy('id','desc')->paginate(10);
                 break;
             case 'hr':
             case 'sg':
                 $tournees = Tournee::when($search, function ($query, $search) {
                     return $query->where('order_number', 'like', '%' . $search . '%')->orWhere('purpose', 'like', '%' . $search . '%');
-                })->where('status', 'like', 'approved')->paginate(10);
+                })->where('status', 'like', 'approved')->orderBy('id','desc')->paginate(10);
                 break;
             default:
                 $tournees = null;
