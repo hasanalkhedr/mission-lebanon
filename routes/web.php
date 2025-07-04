@@ -107,7 +107,9 @@ Route::get('/reports', [ReportsController::class, 'index'])->middleware('auth')-
 Route::post('/reports', [ReportsController::class, 'generateReport'])->middleware('auth')->name('reports.generateReport');
 // Authentication routes (Laravel Breeze)
 require __DIR__ . '/auth.php';
-
+Livewire::setUpdateRoute(function ($handle) {
+    return Route::post('/mission/livewire/update', $handle);
+});
 
 Route::get('/{anything}', function(){
     return view('errors.404');

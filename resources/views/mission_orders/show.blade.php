@@ -1,4 +1,8 @@
-<!-- resources/views/mission_orders/show.blade.php -->
+
+
+@php
+    use App\Models\Department;
+@endphp
 @extends('layouts.app')
 @section('title', $missionOrder->order_number.'-'.$missionOrder->employee->first_name.' '.$missionOrder->employee->last_name)
 @section('content')
@@ -14,7 +18,7 @@
             </div>
             <div class="w-1/5 px-3">
                 <x-label>
-                    Ordre de Mission Date
+                   Date d'ordre de mission
                 </x-label>
                 <label
                     class="ms-1 text-sm font-bold {{$missionOrder->order_date > $missionOrder->start_date ? 'text-red-600 bg-yellow-400' : 'text-blue-600'}} dark:text-gray-500 mr-5 bg-gray-100 px-2 py-2">{{ $missionOrder->order_date->format('d/m/Y') }}</label>
@@ -163,8 +167,11 @@
                 @break
 
                 @case('sup_approve')
-                    @if (auth()->user()->employee->role === 'supervisor' &&
-                            auth()->user()->employee->department_id === $missionOrder->employee->department_id)
+@if (
+                        (auth()->user()->employee->role === 'supervisor') &&
+                            in_array(
+                                $missionOrder->employee->department_id,
+                                Department::where('manager_id', Auth::user()->employee->id)->pluck('id')->toArray()))
                         <button
                             class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center hover:text-gray-900"
                             type="button" data-modal-toggle="approveModal-{{ $missionOrder->id }}">

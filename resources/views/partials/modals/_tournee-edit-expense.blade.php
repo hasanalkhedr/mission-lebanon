@@ -52,7 +52,7 @@
                                 <x-label>Montant<span
                                         class="text-red-500">*</span></x-label>
                                 <x-text-input type="number" required
-                                    name="amount" step="any"
+                                    name="amount" step="0.01"
                                     value="{{ old('amount', $expense->amount) }}" />
                             </div>
                             <div class="flex flex-wrap -mx-3 mb-0">
@@ -69,7 +69,7 @@
                             <div class="relative w-full h-full mx-auto">
                                 <!-- Image preview -->
                                 <img id="expenseDocumentPreview-edit-{{ $expense->id }}"
-                                    src="{{ asset('storage/app/public/' . $expense->expense_document) }}"
+                                    src="{{ asset('storage/' . $expense->expense_document) }}"
                                     alt="Document de dépenses"
                                     class="object-cover w-full h-full">
                                 <!-- Browse Files Button positioned on top of the image -->

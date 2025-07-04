@@ -13,7 +13,7 @@
             </div>
             <div class="w-1/3 px-3">
                 <x-label>
-                    Date le Ordre:<span class="text-red-500">*</span>
+                   Date d'ordre de mission:<span class="text-red-500">*</span>
                 </x-label>
                 <x-date-time-input class="appearance-none block h-12 w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none" name="order_date" value="{{(new \DateTime())->format('Y-m-d') }}" type="date" readonly>
                 </x-date-time-input>
@@ -39,7 +39,7 @@
             </div>
             <div class="w-1/2 px-3">
                 <x-label>
-                    Fonction
+                    Fonction administrative
                 </x-label>
                 <x-readonly-text-input name="position" value="{{ auth()->user()->employee->position }}" />
             </div>
@@ -115,10 +115,10 @@
                 <div class="select-container">
                     <x-select-input name="bareme_id" required class="select2">
                         @foreach ($baremes as $bareme)
-                            @if(str_contains($bareme->pays, 'France'))
-                            <option {{ old('bareme_id') == $bareme->id ? 'selected' : '' }} value="{{ $bareme->id }}">
-                                {{ $bareme->pays }} ({{ $bareme->currency }})
-                            </option>
+                            @if(str_contains($bareme->pays, 'France') || str_contains($bareme->pays, 'LIBAN'))
+                                <option {{ old('bareme_id') == $bareme->id ? 'selected' : '' }} value="{{ $bareme->id }}">
+                                    {{ $bareme->pays }} ({{ $bareme->currency }})
+                                </option>
                             @else
                                 <option {{ old('bareme_id') == $bareme->id ? 'selected' : '' }} value="{{ $bareme->id }}">
                                     {{ $bareme->pays }} (Montant:{{ $bareme->pays_per_day . ' ' . $bareme->currency }} /

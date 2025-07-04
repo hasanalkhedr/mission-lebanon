@@ -18,7 +18,7 @@
                 <table class="table-auto w-full text-left">
                     <thead>
                         <tr class="bg-blue-200">
-                            <th colspan="2" class="px-4">Tourneeary</th>
+                            <th colspan="2" class="px-4">Tourneeaire</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -28,7 +28,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="w-1/3">Fonction :</td>
+                            <td class="w-1/3">Fonction administrative:</td>
                             <td class="w-2/3">{{ $tournee->employee->position }}</td>
                         </tr>
                         <tr>
@@ -41,7 +41,7 @@
                 <table class="table-auto w-full text-left">
                     <thead>
                         <tr class="bg-blue-200">
-                            <th colspan="2" class="px-4">Tournee</th>
+                            <th colspan="2" class="px-4">Détails Tournee</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -78,11 +78,8 @@
                     <tbody>
                         <tr>
                             <td class="w-full">
-                                {{ $tournee->bareme->pays }}
-                                (Montant:{{ $tournee->bareme->pays_per_day . ' ' . $tournee->bareme->currency }}
-                                / Repas:{{ $tournee->bareme->meal_cost }} /
-                                Hebergement:{{ $tournee->bareme->accomodation_cost }})
-                            </td>
+                                {{ $tournee->bareme->pays }} | {{ $tournee->bareme->currency }}
+                                                       </td>
                         </tr>
                     </tbody>
                 </table>

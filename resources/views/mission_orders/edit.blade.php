@@ -14,7 +14,7 @@
             </div>
             <div class="w-1/3 px-3">
                 <x-label>
-                    Date le Ordre:<span class="text-red-500">*</span>
+                    Date d'ordre de mission:<span class="text-red-500">*</span>
                 </x-label>
                 <x-date-time-input class="appearance-none block h-12 w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" name="order_date" value="{{$missionOrder->order_date->format('Y-m-d') }}" type="date" readonly>
                 </x-date-time-input>
@@ -40,7 +40,7 @@
             </div>
             <div class="w-1/2 px-3">
                 <x-label>
-                    Fonction
+                    Fonction administrative
                 </x-label>
                 <x-readonly-text-input name="position" value="{{ $missionOrder->employee->position }}" />
             </div>

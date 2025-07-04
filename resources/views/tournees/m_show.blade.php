@@ -1,4 +1,8 @@
-<!-- resources/views/tournees/show.blade.php -->
+
+@php
+    use App\Models\Department;
+@endphp
+
 @extends('layouts.app')
 @section('title', $tournee->order_number.'-'.$tournee->employee->first_name.' '.$tournee->employee->last_name)
 @section('content')
@@ -75,10 +79,7 @@
                     Pays de Tournee<span class="text-red-500">*</span>
                 </x-label>
                 <label class="ms-1 text-sm font-medium text-blue-600 dark:text-gray-500 mr-5 bg-gray-100 px-2 py-2">
-                    {{ $tournee->bareme->pays }}
-                    (Montant:{{ $tournee->bareme->pays_per_day . ' ' . $tournee->bareme->currency }} /
-                    Repas:{{ $tournee->bareme->meal_cost }} /
-                    Hebergement:{{ $tournee->bareme->accomodation_cost }})
+                    {{ $tournee->bareme->pays }} | {{ $tournee->bareme->currency }}
                 </label>
             </div>
         </div>
@@ -152,26 +153,27 @@
                                         <td
                                             class="px-6 text-center border border-gray-200 py-4 whitespace-nowrap text-sm text-gray-800">
                                             {{ $expense->currency }}</td>
+<td
+                                            class="px-6 text-center border border-gray-200 py-4 whitespace-nowrap text-sm text-gray-800">
+                                            <button
+                                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center hover:text-gray-900"
+                                                type="button" data-modal-toggle="viewDocumentModal-{{ $expense->id }}">
+                                                {{ __('Voir le document') }}
+                                            </button>
+                                            <a href="{{ route('expenses.download_document', $expense) }}"><button
+                                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center hover:text-gray-900"
+                                                    type="button">
+                                                    {{ __('Télécharger le document') }}
+                                                </button>
+                                            </a>
+                                            @include('partials.modals._tournee-view-document')
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr class="odd:bg-white even:bg-gray-100 hover:bg-gray-100">
                                         <td colspan="4"
                                             class="px-6 text-center border border-gray-200 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
                                             {{__('No Expenses Found')}}</td>
-                                            <td class="px-6 text-center border border-gray-200 py-4 whitespace-nowrap text-sm text-gray-800">
-                    <button
-                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center hover:text-gray-900"
-                            type="button" data-modal-toggle="viewDocumentModal-{{ $expense->id }}">
-                            {{ __('Voir le document') }}
-                        </button>
-                        <a href="{{route('expenses.download_document', $expense)}}"><button
-                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center hover:text-gray-900"
-                            type="button">
-                            {{ __('Télécharger le document') }}
-                        </button>
-                    </a>
-                        @include('partials.modals._tournee-view-document')
-                        </td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -219,8 +221,11 @@
                 @break
 
                 @case('sup_approve')
-                    @if (auth()->user()->employee->role === 'supervisor' &&
-                            auth()->user()->employee->department_id === $tournee->employee->department_id)
+@if (
+                    (auth()->user()->employee->role === 'supervisor') &&
+                        in_array(
+                            $tournee->employee->department_id,
+                            Department::where('manager_id', Auth::user()->employee->id)->pluck('id')->toArray()))
                         <button
                             class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center hover:text-gray-900"
                             type="button" data-modal-toggle="approveModal-{{ $tournee->id }}">

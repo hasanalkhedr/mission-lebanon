@@ -43,7 +43,7 @@
                             </div>
                             <div class="flex flex-wrap -mx-3 mb-0">
                                 <x-label>Montant<span class="text-red-500">*</span></x-label>
-                                <x-text-input type="number" step="any" required name="amount" value="{{ old('amount') }}" />
+                                <x-text-input type="number" step="0.01" required name="amount" value="{{ old('amount') }}" />
                             </div>
                             <div class="flex flex-wrap -mx-3 mb-0">
                                 <x-select-currency :selectedCurrency="old('currency')" />
