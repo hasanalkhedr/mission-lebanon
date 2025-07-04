@@ -7,7 +7,7 @@
         <div class="report-page" style="width: 210mm; height: 277mm; margin: 0 auto; padding: 8mm; box-sizing: border-box;">
             <!-- Header -->
             <div class="flex justify-between items-start mb-2">
-                <x-application-logo class="h-16 w-2/5" />
+                <x-application-logo class="h-12 w-2/5" />
                 <div class="text-right w-3/5">
                     <p>Beyrouth, {{ $missionOrder->memor_date->format('d/m/Y') }}</p>
                 </div>
