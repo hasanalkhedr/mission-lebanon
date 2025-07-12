@@ -1,5 +1,5 @@
 <!-- IJM Table -->
-<h2 class="pb-2 text-sm font-bold text-blue-700">Calcul des Indemnités Journalières de Tournee</h2>
+<h2 class="pb-[2px] text-sm font-bold text-blue-700">Calcul des Indemnités Journalières de Tournee</h2>
 <div class="flex flex-col">
     <div class="-m-1.5 overflow-x-auto">
         <div class="p-1.5 min-w-full inline-block align-middle">
@@ -8,48 +8,48 @@
                     <thead>
                         <tr>
                             <th scope="col"
-                                class="px-6 py-1 text-start text-xs font-medium text-gray-600 uppercase border border-gray-400">
+                                class="px-3 py-[1px] text-start text-xs font-medium text-gray-600 uppercase border border-gray-400">
                                 Taux
                                 Journalier</th>
                             <th scope="col"
-                                class="px-6 py-1 text-start text-xs font-medium text-white uppercase border border-gray-400">
+                                class="px-3 py-[1px] text-start text-xs font-medium text-white uppercase border border-gray-400">
                                 {{ $tournee->bareme->pays_per_day }}</th>
                             <th scope="col"
-                                class="px-6 py-1 text-start text-xs font-medium text-gray-600 uppercase border border-gray-400">
+                                class="px-3 py-[1px] text-start text-xs font-medium text-gray-600 uppercase border border-gray-400">
                                 Nuitée (s)
                             </th>
                             <th scope="col"
-                                class="px-6 py-1 text-start text-xs font-medium text-gray-600 uppercase border border-gray-400">
+                                class="px-3 py-[1px] text-start text-xs font-medium text-gray-600 uppercase border border-gray-400">
                                 Repas</th>
                             <th scope="col"
-                                class="px-6 py-1 text-start text-xs font-medium text-gray-600 uppercase border border-gray-400">
+                                class="px-3 py-[1px] text-start text-xs font-medium text-gray-600 uppercase border border-gray-400">
                                 Total</th>
                             <th scope="col"
-                                class="px-6 py-1 text-start text-xs font-medium text-gray-600 uppercase border border-gray-400">
+                                class="px-3 py-[1px] text-start text-xs font-medium text-gray-600 uppercase border border-gray-400">
                                 Devise</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <th scope="col"
-                                class="px-6 py-1 text-start text-xs font-medium text-gray-600 uppercase border border-gray-400">
+                                class="px-3 py-[1px] text-start text-xs font-medium text-gray-600 uppercase border border-gray-400">
                                 Indemnité
                                 d’hébèrgement
                             </th>
                             <th scope="col"
-                                class="px-6 py-1 text-start text-xs font-medium text-white uppercase border border-gray-400">
+                                class="px-3 py-[1px] text-start text-xs font-medium text-white uppercase border border-gray-400">
                                 {{ $tournee->bareme->accomodation_cost }}
                             </th>
                             <td
-                                class="px-6 py-1 whitespace-nowrap text-sm text-center  font-medium text-gray-900 border border-gray-400">
+                                class="px-3 py-[1px] whitespace-nowrap text-sm text-center  font-medium text-gray-900 border border-gray-400">
                                 <span class="font-bold text-red-500" id="no_remaining_accomodation">
                                     {{ $tournee->no_accomodation - $tournee->no_ded_accomodation }}</span>
                             </td>
                             <td
-                                class="px-6 py-1 whitespace-nowrap text-sm font-medium text-gray-900 border border-gray-400 bg-gray-400">
+                                class="px-3 py-[1px] whitespace-nowrap text-sm font-medium text-gray-900 border border-gray-400 bg-gray-400">
                             </td>
                             <td
-                                class="px-6 py-1 whitespace-nowrap text-sm font-medium text-gray-900 border border-gray-400">
+                                class="px-3 py-[1px] whitespace-nowrap text-sm font-medium text-gray-900 border border-gray-400">
                                 <span id="value_remaining_accomodation">
                                     @if ($tournee->actual_fees && $tournee->actual_fees_amount > 0)
                                         {{ ($tournee->no_accomodation - $tournee->no_ded_accomodation) * $tournee->actual_fees_amount }}
@@ -59,34 +59,34 @@
                                 </span>
                             </td>
                             <td
-                                class="px-6 py-1 whitespace-nowrap text-sm font-medium text-gray-900 border border-gray-400">
+                                class="px-3 py-[1px] whitespace-nowrap text-sm font-medium text-gray-900 border border-gray-400">
                                 {{ $tournee->bareme->currency }}</td>
                         </tr>
                         <tr>
                             <th scope="col"
-                                class="px-6 py-1 text-start text-xs font-medium text-gray-600 uppercase border border-gray-400">
+                                class="px-3 py-[1px] text-start text-xs font-medium text-gray-600 uppercase border border-gray-400">
                                 Indemnité de
                                 Repas
                             </th>
                             <th scope="col"
-                                class="px-6 py-1 text-start text-xs font-medium text-white uppercase border border-gray-400">
+                                class="px-3 py-[1px] text-start text-xs font-medium text-white uppercase border border-gray-400">
                                 {{ $tournee->bareme->meal_cost }}
                             </th>
                             <td
-                                class="px-6 py-1 whitespace-nowrap text-sm font-medium text-gray-900 border border-gray-400 bg-gray-400">
+                                class="px-3 py-[1px] whitespace-nowrap text-sm font-medium text-gray-900 border border-gray-400 bg-gray-400">
                             </td>
                             <td
-                                class="px-6 py-1 whitespace-nowrap text-sm text-center  font-medium text-gray-900 border border-gray-400">
+                                class="px-3 py-[1px] whitespace-nowrap text-sm text-center  font-medium text-gray-900 border border-gray-400">
                                 <span class="font-bold text-red-500" id="no_remaining_meals">
                                     {{ $tournee->no_meals - $tournee->no_ded_meals }}</span>
                             </td>
                             <td
-                                class="px-6 py-1 whitespace-nowrap text-sm font-medium text-gray-900 border border-gray-400">
+                                class="px-3 py-[1px] whitespace-nowrap text-sm font-medium text-gray-900 border border-gray-400">
                                 <span id="value_remaining_meals">
                                     {{ ($tournee->no_meals - $tournee->no_ded_meals) * $tournee->bareme->meal_cost }}</span>
                             </td>
                             <td
-                                class="px-6 py-1 whitespace-nowrap text-sm font-medium text-gray-900 border border-gray-400">
+                                class="px-3 py-[1px] whitespace-nowrap text-sm font-medium text-gray-900 border border-gray-400">
                                 {{ $tournee->bareme->currency }}</td>
                         </tr>
                     </tbody>
@@ -94,11 +94,11 @@
                         <tr>
                             <td colspan="2"></td>
                             <th scope="col" colspan="2"
-                                class="px-6 py-1 text-center text-xs font-bold text-blue-600 uppercase border border-gray-500">
+                                class="px-3 py-[1px] text-center text-xs font-bold text-blue-600 uppercase border border-gray-500">
                                 Total
                             </th>
                             <th scope="col"
-                                class="px-6 py-1 text-start text-xs font-bold text-blue-600 uppercase border border-gray-500">
+                                class="px-3 py-[1px] text-start text-xs font-bold text-blue-600 uppercase border border-gray-500">
                                 <span id="total">
                                     @if ($tournee->actual_fees && $tournee->actual_fees_amount > 0)
                                         {{ ($tournee->no_accomodation - $tournee->no_ded_accomodation) * $tournee->actual_fees_amount +
@@ -117,7 +117,7 @@
                                         ($tournee->no_meals - $tournee->no_ded_meals) * $tournee->bareme->meal_cost }} @endif">
                             </th>
                             <th scope="col"
-                                class="px-6 py-1 text-start text-xs font-bold text-blue-600 uppercase border border-gray-500">
+                                class="px-3 py-[1px] text-start text-xs font-bold text-blue-600 uppercase border border-gray-500">
                                 {{ $tournee->bareme->currency }}
                             </th>
                         </tr>
