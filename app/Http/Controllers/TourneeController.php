@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Models\Bareme;
+use App\Models\Employee;
 use App\Models\Tournee;
 use App\Models\User;
 use App\Notifications\MemoireTourneeLevelNotification;
@@ -24,8 +25,9 @@ class TourneeController extends Controller
                 })->orderBy('id','desc')->paginate(10);
                 break;
             case 'supervisor':
-                $tournees = Tournee::whereHas('employee', function ($query) {
-                    $query->where('department_id', auth()->user()->employee->department_id);
+                $depIds = Department::where('manager_id', auth()->user()->employee->id)->pluck('id')->toArray();
+                $tournees = Tournee::whereHas('employee', function ($query) use($depIds) {
+                    $query->whereIn('department_id', $depIds);
                 })->when($search, function ($query, $search) {
                     return $query->where('order_number', 'like', '%' . $search . '%')->orWhere('purpose', 'like', '%' . $search . '%');
                 })->orderBy('id','desc')->paginate(10);
@@ -44,10 +46,9 @@ class TourneeController extends Controller
     }
     public function show(Tournee $tournee)
     {
-        if (
-            (auth()->user()->employee->role == 'supervisor' && $tournee->employee->department_id != auth()->user()->employee->department_id)
-            || (auth()->user()->employee->role == 'employee' && $tournee->employee->id != auth()->user()->employee->id)
-        ) {
+        $tourneeDep = $tournee->employee->department;
+        if ( (auth()->user()->employee->role == 'employee' && $tournee->employee->id != auth()->user()->employee->id)
+           || (auth()->user()->employee->role == 'supervisor' && $tourneeDep->manager_id == auth()->user()->employee->id )) {
             abort(404);
         } else {
             return view('tournees.show', compact('tournee'));
@@ -248,8 +249,9 @@ class TourneeController extends Controller
                     })->orderBy('id','desc')->paginate(10);
                 break;
             case 'supervisor':
-                $tournees = Tournee::whereHas('employee', function ($query) {
-                    $query->where('department_id', auth()->user()->employee->department_id);
+                $depIds = Department::where('manager_id', auth()->user()->employee->id)->pluck('id')->toArray();
+                $tournees = Tournee::whereHas('employee', function ($query) use($depIds) {
+                    $query->whereIn('department_id', $depIds);
                 })->where('status', 'like', 'approved')->when($search, function ($query, $search) {
                     return $query->where('order_number', 'like', '%' . $search . '%')->orWhere('purpose', 'like', '%' . $search . '%');
                 })->orderBy('id','desc')->paginate(10);
@@ -268,10 +270,9 @@ class TourneeController extends Controller
     }
     public function m_show(Request $request, Tournee $tournee)
     {
-        if (
-            (auth()->user()->employee->role == 'supervisor' && $tournee->employee->department_id != auth()->user()->employee->department_id)
-            || (auth()->user()->employee->role == 'employee' && $tournee->employee->id != auth()->user()->employee->id)
-        ) {
+        $tourneeDep = $tournee->employee->department;
+        if ( (auth()->user()->employee->role == 'employee' && $tournee->employee->id != auth()->user()->employee->id)
+           || (auth()->user()->employee->role == 'supervisor' && $tourneeDep->manager_id == auth()->user()->employee->id )) {
             abort(404);
         } else {
             return view('tournees.m_show', compact('tournee'));

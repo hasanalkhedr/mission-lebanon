@@ -24,8 +24,9 @@ class MissionOrderController extends Controller
                 })->orderBy('id','desc')->paginate(10);
                 break;
             case 'supervisor':
-                $missionOrders = MissionOrder::whereHas('employee', function ($query) {
-                    $query->where('department_id', auth()->user()->employee->department_id);
+                $depIds = Department::where('manager_id', auth()->user()->employee->id)->pluck('id')->toArray();
+                $missionOrders = MissionOrder::whereHas('employee', function ($query) use($depIds) {
+                    $query->whereIn('department_id', $depIds);
                 })->when($search, function ($query, $search) {
                     return $query->where('order_number', 'like', '%' . $search . '%')->orWhere('purpose', 'like', '%' . $search . '%');
                 })->orderBy('id','desc')->paginate(10);
@@ -44,10 +45,9 @@ class MissionOrderController extends Controller
     }
     public function show(MissionOrder $missionOrder)
     {
-        if (
-            (auth()->user()->employee->role == 'supervisor' && $missionOrder->employee->department_id != auth()->user()->employee->department_id)
-            || (auth()->user()->employee->role == 'employee' && $missionOrder->employee->id != auth()->user()->employee->id)
-        ) {
+        $missionOrderDep = $missionOrder->employee->department;
+        if ( (auth()->user()->employee->role == 'employee' && $missionOrder->employee->id != auth()->user()->employee->id)
+           || (auth()->user()->employee->role == 'supervisor' && $missionOrderDep->manager_id == auth()->user()->employee->id )) {
             abort(404);
         } else {
             return view('mission_orders.show', compact('missionOrder'));
@@ -270,8 +270,9 @@ class MissionOrderController extends Controller
                     })->orderBy('id','desc')->paginate(10);
                 break;
             case 'supervisor':
-                $missionOrders = MissionOrder::whereHas('employee', function ($query) {
-                    $query->where('department_id', auth()->user()->employee->department_id);
+                $depIds = Department::where('manager_id', auth()->user()->employee->id)->pluck('id')->toArray();
+                $missionOrders = MissionOrder::whereHas('employee', function ($query) use($depIds) {
+                    $query->whereIn('department_id', $depIds);
                 })->where('status', 'like', 'approved')->when($search, function ($query, $search) {
                     return $query->where('order_number', 'like', '%' . $search . '%')->orWhere('purpose', 'like', '%' . $search . '%');
                 })->orderBy('id','desc')->paginate(10);
@@ -290,10 +291,9 @@ class MissionOrderController extends Controller
     }
     public function m_show(Request $request, MissionOrder $missionOrder)
     {
-        if (
-            (auth()->user()->employee->role == 'supervisor' && $missionOrder->employee->department_id != auth()->user()->employee->department_id)
-            || (auth()->user()->employee->role == 'employee' && $missionOrder->employee->id != auth()->user()->employee->id)
-        ) {
+       $missionOrderDep = $missionOrder->employee->department;
+        if ( (auth()->user()->employee->role == 'employee' && $missionOrder->employee->id != auth()->user()->employee->id)
+           || (auth()->user()->employee->role == 'supervisor' && $missionOrderDep->manager_id == auth()->user()->employee->id )) {
             abort(404);
         } else {
             return view('mission_orders.m_show', compact('missionOrder'));
