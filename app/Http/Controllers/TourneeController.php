@@ -48,7 +48,7 @@ class TourneeController extends Controller
     {
         $tourneeDep = $tournee->employee->department;
         if ( (auth()->user()->employee->role == 'employee' && $tournee->employee->id != auth()->user()->employee->id)
-           || (auth()->user()->employee->role == 'supervisor' && $tourneeDep->manager_id == auth()->user()->employee->id )) {
+           || (auth()->user()->employee->role == 'supervisor' && $tourneeDep->manager_id != auth()->user()->employee->id )) {
             abort(404);
         } else {
             return view('tournees.show', compact('tournee'));
@@ -272,7 +272,7 @@ class TourneeController extends Controller
     {
         $tourneeDep = $tournee->employee->department;
         if ( (auth()->user()->employee->role == 'employee' && $tournee->employee->id != auth()->user()->employee->id)
-           || (auth()->user()->employee->role == 'supervisor' && $tourneeDep->manager_id == auth()->user()->employee->id )) {
+           || (auth()->user()->employee->role == 'supervisor' && $tourneeDep->manager_id != auth()->user()->employee->id )) {
             abort(404);
         } else {
             return view('tournees.m_show', compact('tournee'));

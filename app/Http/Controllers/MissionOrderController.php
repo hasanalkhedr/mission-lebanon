@@ -47,7 +47,7 @@ class MissionOrderController extends Controller
     {
         $missionOrderDep = $missionOrder->employee->department;
         if ( (auth()->user()->employee->role == 'employee' && $missionOrder->employee->id != auth()->user()->employee->id)
-           || (auth()->user()->employee->role == 'supervisor' && $missionOrderDep->manager_id == auth()->user()->employee->id )) {
+           || (auth()->user()->employee->role == 'supervisor' && $missionOrderDep->manager_id != auth()->user()->employee->id )) {
             abort(404);
         } else {
             return view('mission_orders.show', compact('missionOrder'));
@@ -293,7 +293,7 @@ class MissionOrderController extends Controller
     {
        $missionOrderDep = $missionOrder->employee->department;
         if ( (auth()->user()->employee->role == 'employee' && $missionOrder->employee->id != auth()->user()->employee->id)
-           || (auth()->user()->employee->role == 'supervisor' && $missionOrderDep->manager_id == auth()->user()->employee->id )) {
+           || (auth()->user()->employee->role == 'supervisor' && $missionOrderDep->manager_id != auth()->user()->employee->id )) {
             abort(404);
         } else {
             return view('mission_orders.m_show', compact('missionOrder'));
