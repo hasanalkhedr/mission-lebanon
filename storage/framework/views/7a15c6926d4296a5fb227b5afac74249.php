@@ -1,2 +1,0 @@
-<img src="<?php echo e(Vite::asset('resources/images/logo-IFL.png')); ?>" <?php echo e($attributes); ?>/>
-<?php /**PATH /srv/mission-order-app/resources/views/components/application-logo.blade.php ENDPATH**/ ?>
