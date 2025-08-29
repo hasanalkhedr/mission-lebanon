@@ -34,7 +34,7 @@ class Employee extends Model
 
     public function managed_departments()
     {
-        return $this->hasMany(Department::class);
+        return $this->hasMany(Department::class, 'manager_id');
     }
 }
 

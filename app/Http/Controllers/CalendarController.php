@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
 use App\Models\MissionOrder;
 use App\Models\Tournee;
 use Illuminate\Http\Request;
@@ -23,8 +24,10 @@ class CalendarController extends Controller
                 $tournees = $employee->tournees;
                 break;
             case 'supervisor':
-                $missions = $employee->department->missionOrders;
-                $tournees = $employee->department->tournees;
+                $employees = Employee::whereIn('department_id', auth()->user()->employee->managed_departments->pluck('id')->toArray())->get();
+                $missions = MissionOrder::whereIn('employee_id', $employees->pluck('id')->toArray())->get();
+                $tournees = Tournee::whereIn('employee_id', $employees->pluck('id')->toArray())->get();
+                // dd($employees, $missions, $tournees);
                 break;
             case 'hr':
             case 'sg':

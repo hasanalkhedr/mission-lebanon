@@ -20,7 +20,7 @@ class EmployeeController extends Controller
                 $employees = Employee::where('id','=',auth()->user()->employee->id)->paginate(10);
                 break;
             case 'supervisor':
-                $employees = Employee::where('department_id', '=', auth()->user()->employee->department_id)->when($search, function ($query, $search) {
+                $employees = Employee::whereIn('department_id', auth()->user()->employee->managed_departments->pluck('id')->toArray())->when($search, function ($query, $search) {
                     return $query->where('first_name', 'like', '%' . $search . '%')
                         ->orWhere('last_name', 'like', '%' . $search . '%');
                 })->paginate(10);

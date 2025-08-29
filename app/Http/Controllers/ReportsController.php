@@ -19,7 +19,7 @@ class ReportsController extends Controller
                 $employees = collect([$employee]);
                 break;
             case 'supervisor':
-                $employees = $employee->department->employees->with('missionOrders', 'tournees');
+                $employees = Employee::whereIn('department_id', auth()->user()->employee->managed_departments->pluck('id')->toArray())->get();
                 break;
             case 'hr':
             case 'sg':

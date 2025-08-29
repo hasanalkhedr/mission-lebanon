@@ -20,7 +20,14 @@ class MissionOrderController extends Controller
         switch ($role) {
             case 'employee':
                 $missionOrders = MissionOrder::where('employee_id', '=', auth()->user()->employee->id)->when($search, function ($query, $search) {
-                    return $query->where('order_number', 'like', '%' . $search . '%')->orWhere('purpose', 'like', '%' . $search . '%');
+                    $query->where(function ($q) use ($search) {
+                        $q->where('order_number', 'like', '%' . $search . '%')
+                        ->orWhere('purpose', 'like', '%' . $search . '%')
+                        ->orWhereHas('employee', function ($q2) use ($search) {
+                            $q2->where('first_name', 'like', '%' . $search . '%')
+                            ->orWhere('last_name', 'like', '%' . $search . '%');
+                        });
+                    });
                 })->orderBy('id','desc')->paginate(10);
                 break;
             case 'supervisor':
@@ -28,13 +35,27 @@ class MissionOrderController extends Controller
                 $missionOrders = MissionOrder::whereHas('employee', function ($query) use($depIds) {
                     $query->whereIn('department_id', $depIds);
                 })->when($search, function ($query, $search) {
-                    return $query->where('order_number', 'like', '%' . $search . '%')->orWhere('purpose', 'like', '%' . $search . '%');
+                    $query->where(function ($q) use ($search) {
+                        $q->where('order_number', 'like', '%' . $search . '%')
+                        ->orWhere('purpose', 'like', '%' . $search . '%')
+                        ->orWhereHas('employee', function ($q2) use ($search) {
+                            $q2->where('first_name', 'like', '%' . $search . '%')
+                            ->orWhere('last_name', 'like', '%' . $search . '%');
+                        });
+                    });
                 })->orderBy('id','desc')->paginate(10);
                 break;
             case 'hr':
             case 'sg':
                 $missionOrders = MissionOrder::when($search, function ($query, $search) {
-                    return $query->where('order_number', 'like', '%' . $search . '%')->orWhere('purpose', 'like', '%' . $search . '%');
+                    $query->where(function ($q) use ($search) {
+                        $q->where('order_number', 'like', '%' . $search . '%')
+                        ->orWhere('purpose', 'like', '%' . $search . '%')
+                        ->orWhereHas('employee', function ($q2) use ($search) {
+                            $q2->where('first_name', 'like', '%' . $search . '%')
+                            ->orWhere('last_name', 'like', '%' . $search . '%');
+                        });
+                    });
                 })->orderBy('id','desc')->paginate(10);
                 break;
             default:
@@ -266,7 +287,14 @@ class MissionOrderController extends Controller
             case 'employee':
                 $missionOrders = MissionOrder::where('employee_id', '=', auth()->user()->employee->id)
                     ->where('status', 'like', 'approved')->when($search, function ($query, $search) {
-                        return $query->where('order_number', 'like', '%' . $search . '%')->orWhere('purpose', 'like', '%' . $search . '%');
+                        $query->where(function ($q) use ($search) {
+                        $q->where('order_number', 'like', '%' . $search . '%')
+                        ->orWhere('purpose', 'like', '%' . $search . '%')
+                        ->orWhereHas('employee', function ($q2) use ($search) {
+                            $q2->where('first_name', 'like', '%' . $search . '%')
+                            ->orWhere('last_name', 'like', '%' . $search . '%');
+                        });
+                    });
                     })->orderBy('id','desc')->paginate(10);
                 break;
             case 'supervisor':
@@ -274,13 +302,27 @@ class MissionOrderController extends Controller
                 $missionOrders = MissionOrder::whereHas('employee', function ($query) use($depIds) {
                     $query->whereIn('department_id', $depIds);
                 })->where('status', 'like', 'approved')->when($search, function ($query, $search) {
-                    return $query->where('order_number', 'like', '%' . $search . '%')->orWhere('purpose', 'like', '%' . $search . '%');
+                    $query->where(function ($q) use ($search) {
+                        $q->where('order_number', 'like', '%' . $search . '%')
+                        ->orWhere('purpose', 'like', '%' . $search . '%')
+                        ->orWhereHas('employee', function ($q2) use ($search) {
+                            $q2->where('first_name', 'like', '%' . $search . '%')
+                            ->orWhere('last_name', 'like', '%' . $search . '%');
+                        });
+                    });
                 })->orderBy('id','desc')->paginate(10);
                 break;
             case 'hr':
             case 'sg':
                 $missionOrders = MissionOrder::when($search, function ($query, $search) {
-                    return $query->where('order_number', 'like', '%' . $search . '%')->orWhere('purpose', 'like', '%' . $search . '%');
+                    $query->where(function ($q) use ($search) {
+                        $q->where('order_number', 'like', '%' . $search . '%')
+                        ->orWhere('purpose', 'like', '%' . $search . '%')
+                        ->orWhereHas('employee', function ($q2) use ($search) {
+                            $q2->where('first_name', 'like', '%' . $search . '%')
+                            ->orWhere('last_name', 'like', '%' . $search . '%');
+                        });
+                    });
                 })->where('status', 'like', 'approved')->orderBy('id','desc')->paginate(10);
                 break;
             default:

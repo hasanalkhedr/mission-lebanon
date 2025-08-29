@@ -21,7 +21,14 @@ class TourneeController extends Controller
         switch ($role) {
             case 'employee':
                 $tournees = Tournee::where('employee_id', '=', auth()->user()->employee->id)->when($search, function ($query, $search) {
-                    return $query->where('order_number', 'like', '%' . $search . '%')->orWhere('purpose', 'like', '%' . $search . '%');
+                    $query->where(function ($q) use ($search) {
+                        $q->where('order_number', 'like', '%' . $search . '%')
+                        ->orWhere('purpose', 'like', '%' . $search . '%')
+                        ->orWhereHas('employee', function ($q2) use ($search) {
+                            $q2->where('first_name', 'like', '%' . $search . '%')
+                            ->orWhere('last_name', 'like', '%' . $search . '%');
+                        });
+                    });
                 })->orderBy('id','desc')->paginate(10);
                 break;
             case 'supervisor':
@@ -29,13 +36,27 @@ class TourneeController extends Controller
                 $tournees = Tournee::whereHas('employee', function ($query) use($depIds) {
                     $query->whereIn('department_id', $depIds);
                 })->when($search, function ($query, $search) {
-                    return $query->where('order_number', 'like', '%' . $search . '%')->orWhere('purpose', 'like', '%' . $search . '%');
+                    $query->where(function ($q) use ($search) {
+                        $q->where('order_number', 'like', '%' . $search . '%')
+                        ->orWhere('purpose', 'like', '%' . $search . '%')
+                        ->orWhereHas('employee', function ($q2) use ($search) {
+                            $q2->where('first_name', 'like', '%' . $search . '%')
+                            ->orWhere('last_name', 'like', '%' . $search . '%');
+                        });
+                    });
                 })->orderBy('id','desc')->paginate(10);
                 break;
             case 'hr':
             case 'sg':
                 $tournees = Tournee::when($search, function ($query, $search) {
-                    return $query->where('order_number', 'like', '%' . $search . '%')->orWhere('purpose', 'like', '%' . $search . '%');
+                    $query->where(function ($q) use ($search) {
+                        $q->where('order_number', 'like', '%' . $search . '%')
+                        ->orWhere('purpose', 'like', '%' . $search . '%')
+                        ->orWhereHas('employee', function ($q2) use ($search) {
+                            $q2->where('first_name', 'like', '%' . $search . '%')
+                            ->orWhere('last_name', 'like', '%' . $search . '%');
+                        });
+                    });
                 })->orderBy('id','desc')->paginate(10);
                 break;
             default:
@@ -245,7 +266,14 @@ class TourneeController extends Controller
             case 'employee':
                 $tournees = Tournee::where('employee_id', '=', auth()->user()->employee->id)
                     ->where('status', 'like', 'approved')->when($search, function ($query, $search) {
-                        return $query->where('order_number', 'like', '%' . $search . '%')->orWhere('purpose', 'like', '%' . $search . '%');
+                        $query->where(function ($q) use ($search) {
+                        $q->where('order_number', 'like', '%' . $search . '%')
+                        ->orWhere('purpose', 'like', '%' . $search . '%')
+                        ->orWhereHas('employee', function ($q2) use ($search) {
+                            $q2->where('first_name', 'like', '%' . $search . '%')
+                            ->orWhere('last_name', 'like', '%' . $search . '%');
+                        });
+                    });
                     })->orderBy('id','desc')->paginate(10);
                 break;
             case 'supervisor':
@@ -253,13 +281,27 @@ class TourneeController extends Controller
                 $tournees = Tournee::whereHas('employee', function ($query) use($depIds) {
                     $query->whereIn('department_id', $depIds);
                 })->where('status', 'like', 'approved')->when($search, function ($query, $search) {
-                    return $query->where('order_number', 'like', '%' . $search . '%')->orWhere('purpose', 'like', '%' . $search . '%');
+                    $query->where(function ($q) use ($search) {
+                        $q->where('order_number', 'like', '%' . $search . '%')
+                        ->orWhere('purpose', 'like', '%' . $search . '%')
+                        ->orWhereHas('employee', function ($q2) use ($search) {
+                            $q2->where('first_name', 'like', '%' . $search . '%')
+                            ->orWhere('last_name', 'like', '%' . $search . '%');
+                        });
+                    });
                 })->orderBy('id','desc')->paginate(10);
                 break;
             case 'hr':
             case 'sg':
                 $tournees = Tournee::when($search, function ($query, $search) {
-                    return $query->where('order_number', 'like', '%' . $search . '%')->orWhere('purpose', 'like', '%' . $search . '%');
+                    $query->where(function ($q) use ($search) {
+                        $q->where('order_number', 'like', '%' . $search . '%')
+                        ->orWhere('purpose', 'like', '%' . $search . '%')
+                        ->orWhereHas('employee', function ($q2) use ($search) {
+                            $q2->where('first_name', 'like', '%' . $search . '%')
+                            ->orWhere('last_name', 'like', '%' . $search . '%');
+                        });
+                    });
                 })->where('status', 'like', 'approved')->orderBy('id','desc')->paginate(10);
                 break;
             default:

@@ -36,7 +36,7 @@ class DepartmentController extends Controller
         // if (request('old_manager_id') != request('manager_id')) {
         $old_manager = Employee::find(request('old_manager_id'));
         $manager = Employee::find(request('manager_id'));
-        if ($old_manager != null) {
+        if ($old_manager != null && $old_manager->managed_departments->isEmpty()) {
             $old_manager->is_supervisor = false;
             if ($old_manager->role === 'supervisor') {
                 $old_manager->role = 'employee';
