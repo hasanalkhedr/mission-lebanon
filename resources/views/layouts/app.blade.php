@@ -31,6 +31,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css"
         integrity="sha512-MQXduO8IQnJVq1qmySpN87QQkiR1bZHtorbJBD0tzy7/0U9+YIC93QWHeGTEoojMVHWWNkoCp8V6OzVSYrX0oQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <script src="//unpkg.com/alpinejs" defer></script>
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     @stack('head')
@@ -442,8 +443,8 @@
 
         <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script> --}}
 {{--
-<script src="https://phare-ifl.com/mission/livewire/livewire.js?id=ec3a716b" 
-data-csrf="{{ csrf_token() }}" 
+<script src="https://phare-ifl.com/mission/livewire/livewire.js?id=ec3a716b"
+data-csrf="{{ csrf_token() }}"
 data-update-uri="mission/livewire/update" data-navigate-once="true"></script>
 
 --}}
