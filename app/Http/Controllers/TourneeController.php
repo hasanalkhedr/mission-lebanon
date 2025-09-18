@@ -116,7 +116,14 @@ class TourneeController extends Controller
         } else if ($action === 'submit') {
             switch (Auth::user()->employee->role) {
                 case 'employee':
-                    $status = 'sup_approve';
+                    $employee_dep_id = Auth::user()->employee->department_id;
+                    $sg_dep_id = array_column(Department::where('name', 'like', 'Secrétariat Général')
+                        ->get('id')->toArray(), 'id');
+                        if(in_array($employee_dep_id, $sg_dep_id)) {
+                            $status = 'hr_approve';
+                        } else {
+                            $status = 'sup_approve';
+                        }
                     break;
                 case 'supervisor':
                     $employee_dep_id = Auth::user()->employee->department_id;
@@ -194,7 +201,14 @@ class TourneeController extends Controller
         } else if ($action === 'submit') {
             switch (Auth::user()->employee->role) {
                 case 'employee':
-                    $status = 'sup_approve';
+                    $employee_dep_id = Auth::user()->employee->department_id;
+                    $sg_dep_id = array_column(Department::where('name', 'like', 'Secrétariat Général')
+                        ->get('id')->toArray(), 'id');
+                        if(in_array($employee_dep_id, $sg_dep_id)) {
+                            $status = 'hr_approve';
+                        } else {
+                            $status = 'sup_approve';
+                        }
                     break;
                 case 'supervisor':
                     $employee_dep_id = Auth::user()->employee->department_id;
@@ -349,7 +363,14 @@ class TourneeController extends Controller
         } else if ($action === 'submit') {
             switch (Auth::user()->employee->role) {
                 case 'employee':
-                    $memor_status = 'sup_approve';
+                    $employee_dep_id = Auth::user()->employee->department_id;
+                    $sg_dep_id = array_column(Department::where('name', 'like', 'Secrétariat Général')
+                        ->get('id')->toArray(), 'id');
+                        if(in_array($employee_dep_id, $sg_dep_id)) {
+                            $memor_status = 'hr_approve';
+                        } else {
+                            $memor_status = 'sup_approve';
+                        }
                     break;
                 case 'supervisor':
                     $employee_dep_id = Auth::user()->employee->department_id;
