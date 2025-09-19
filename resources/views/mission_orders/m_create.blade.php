@@ -18,7 +18,8 @@
                 </x-label>
                 <x-date-time-input
                     class="appearance-none block h-12 w-full bg-white text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                    name="memor_date" value="{{ old('memor_date', $missionOrder->end_date->format('Y-m-d')) }}" type="date" required>
+                    name="memor_date" value="{{ old('memor_date', $missionOrder->end_date->format('Y-m-d')) }}"
+                    type="date" required>
                 </x-date-time-input>
             </div>
             <div class="w-1/3 px-3">
@@ -104,28 +105,19 @@
         </div>
         <div class="flex flex-wrap -mx-3 mb-2">
             <div class="w-full px-3">
-                <x-label>
-                    Pays de Mission<span class="text-red-500">*</span>
-                </x-label>
+                <x-label>Pays de Mission<span class="text-red-500">*</span></x-label>
                 <x-disabled-select-input>
-                    @if (in_array(
-                            $missionOrder->bareme->id,
-                            array_column(App\Models\Bareme::where('pays', 'like', '%France%')->get('id')->toArray(), 'id')))
+                    @if (in_array($missionOrder->bareme->id, array_column(App\Models\Bareme::where('pays', 'like', '%France%')->get('id')->toArray(), 'id')))
                         <option value="{{ $missionOrder->bareme->id }}">
-                            {{ $missionOrder->bareme->pays }}
-                            ({{ $missionOrder->bareme->currency }})
+                            {{ $missionOrder->bareme->pays }} ({{ $missionOrder->bareme->currency }})
                         </option>
-@elseif (in_array(
-                            $missionOrder->bareme->id,
-                            array_column(App\Models\Bareme::where('pays', 'like', '%LIBAN%')->get('id')->toArray(), 'id')))
+                    @elseif (in_array($missionOrder->bareme->id, array_column(App\Models\Bareme::where('pays', 'like', '%LIBAN%')->get('id')->toArray(), 'id')))
                         <option value="{{ $missionOrder->bareme->id }}">
-                            {{ $missionOrder->bareme->pays }}
-                            ({{ $missionOrder->bareme->currency }})
-                        </option> 
-                   @else
+                            {{ $missionOrder->bareme->pays }} ({{ $missionOrder->bareme->currency }})
+                        </option>
+                    @else
                         <option value="{{ $missionOrder->bareme->id }}">
-                            {{ $missionOrder->bareme->pays }}
-                            (Montant:{{ $missionOrder->bareme->pays_per_day . ' ' . $missionOrder->bareme->currency }} /
+                            {{ $missionOrder->bareme->pays }} (Montant:{{ $missionOrder->bareme->pays_per_day . ' ' . $missionOrder->bareme->currency }} /
                             Repas:{{ $missionOrder->bareme->meal_cost }} /
                             Hebergement:{{ $missionOrder->bareme->accomodation_cost }})
                         </option>/
@@ -139,14 +131,14 @@
                     Nuitées à déduire des IJM<span class="text-red-500">*</span>
                 </x-label>
                 <x-text-input type="number" name="no_ded_accomodation" id="no_ded_accomodation"
-                    value="{{old('no_ded_accomodation',  $missionOrder->no_ded_accomodation) }}" />
+                    value="{{ old('no_ded_accomodation', $missionOrder->no_ded_accomodation) }}" />
             </div>
             <div class="w-1/2 px-3">
                 <x-label>
                     Repas à déduire<span class="text-red-500">*</span>
                 </x-label>
                 <x-text-input type="number" name="no_ded_meals" id="no_ded_meals"
-                    value="{{old('no_ded_meals', $missionOrder->no_ded_meals) }}" />
+                    value="{{ old('no_ded_meals', $missionOrder->no_ded_meals) }}" />
             </div>
         </div>
         <div class="flex flex-wrap -mx-3 mb-2">
@@ -154,11 +146,13 @@
                 <x-label>
                     Avance sur IJM (EURO ou USD)<span class="text-red-500">*</span>
                 </x-label>
-                <x-text-input type="number" name="advance" step="any" value="{{old('advance',  $missionOrder->advance )}}" />
+                <x-text-input type="number" name="advance" step="any"
+                    value="{{ old('advance', $missionOrder->advance) }}" />
             </div>
             <div class="w-1/2 px-3">
-                <x-label>{{__('Submit Values before add expenses')}}</x-label>
-                <x-primary-button name="action" value="partialSubmit" class="h-11">Soumettre des valeurs</x-primary-button>
+                <x-label>{{ __('Submit Values before add expenses') }}</x-label>
+                <x-primary-button name="action" value="partialSubmit" class="h-11">Soumettre des
+                    valeurs</x-primary-button>
             </div>
         </div>
         <x-form-divider>Frais Mission</x-form-divider>
@@ -196,8 +190,10 @@
                             <div class="p-6">
                                 <div class="text-base leading-relaxed text-gray-500 text-start">
                                     <ul>
-                                        <li>{{ __('When save the mission as draft, you can edit or delete it later.')}}</li>
-                                        <li>{{ __('When submit the mission, you can not edit or delete it, and the mission will go to the approve process.')}}</li>
+                                        <li>{{ __('When save the mission as draft, you can edit or delete it later.') }}
+                                        </li>
+                                        <li>{{ __('When submit the mission, you can not edit or delete it, and the mission will go to the approve process.') }}
+                                        </li>
                                     </ul>
                                 </div>
                                 <div

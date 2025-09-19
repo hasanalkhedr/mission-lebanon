@@ -18,7 +18,8 @@ class ExpenseController extends Controller
             'currency' => 'required',
             'expense_date' => 'required|date|after_or_equal:'.$missionOrder->start_date.'|before_or_equal:'.$missionOrder->end_date,
             'description' => 'required',
-            'expense_document' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            //'expense_document' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'expense_document' => 'required|file|mimes:jpg,jpeg,png,gif,pdf|max:4096',
         ],
 ['expense_date.after_or_equal'=>'Le champ date de dépense doit ètre une date postérieure ou égale à :date',
 'expense_date.before_or_equal'=>'Le champ date de dépense doit ètre une date antérieure ou égale à :date']);
@@ -44,7 +45,8 @@ class ExpenseController extends Controller
             'currency' => 'required',
             'expense_date' => 'required|date|after_or_equal:'.$expense->missionOrder->start_date.'|before_or_equal:'.$expense->missionOrder->end_date,
             'description' => 'required',
-            'expense_document' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            //'expense_document' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'expense_document' => 'required|file|mimes:jpg,jpeg,png,gif,pdf|max:4096',
         ],
 [
 'expense_date.after_or_equal'=>'Le champ date de dépense doit ètre une date postérieure ou égale à :date',
@@ -56,7 +58,8 @@ class ExpenseController extends Controller
         if ($request->hasFile('expense_document')) {
             // Store the image in 'storage/app/public/profile_pictures'
             $file = $request->file('expense_document');
-            $filename = $request->input('mission_order_id') . '-'. $expense->id . '.'.$file->getClientOriginalExtension(); // e.g. 1609459200.jpeg
+            //$filename = $request->input('mission_order_id') . '-'. $expense->id . '.'.$file->getClientOriginalExtension(); // e.g. 1609459200.jpeg
+            $filename = $expense->mission_order_id . '-'. $expense->id . '.'.$file->getClientOriginalExtension(); // e.g. 1609459200.jpeg
 
             $path = $file->storeAs('expense_documents', $filename, 'public');
 
@@ -64,7 +67,7 @@ class ExpenseController extends Controller
             $expense->expense_document = $path;
             $expense->save();
         }
-        return redirect()->route('mission_orders.m_create',$request->input('mission_order_id'));
+                return redirect()->route('mission_orders.m_create',$expense->mission_order_id);
     }
     public function destroy(Expense $expense)
     {

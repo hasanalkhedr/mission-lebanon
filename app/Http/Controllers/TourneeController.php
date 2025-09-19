@@ -353,7 +353,7 @@ class TourneeController extends Controller
 
         ]);
         $action = $request->input('action');
-        $memor_status = '';
+        $memor_status = null;
         if ($action === 'partialSubmit') {
             $tournee->update($request->all());
             return redirect()->route('mission_orders.m_create', $tournee);

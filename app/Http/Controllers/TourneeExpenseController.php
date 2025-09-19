@@ -12,14 +12,15 @@ class TourneeExpenseController extends Controller
 {
     public function store(Request $request)
     {
-        $tournee = Tournee::find($request->input('mission_order_id'));
+        $tournee = Tournee::find($request->input('tournee_id'));
         $request->validate([
             'tournee_id' => 'required',
             'amount' => 'required|decimal:0,3',
             'currency' => 'required',
             'expense_date' => 'required|date|after_or_equal:'.$tournee->start_date.'|before_or_equal:'.$tournee->end_date,
             'description' => 'required',
-            'expense_document' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            //'expense_document' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'expense_document' => 'required|file|mimes:jpg,jpeg,png,gif,pdf|max:4096',
         ],[
 'expense_date.after_or_equal'=>'Le champ date de dépense doit ètre une date postérieure ou égale à :date',
 'expense_date.before_or_equal'=>'Le champ date de dépense doit ètre une date antérieure ou égale à :date'
@@ -47,7 +48,8 @@ class TourneeExpenseController extends Controller
             'expense_date' => 'required|date|after_or_equal:'.$expense->tournee->start_date.'|before_or_equal:'.$expense->tournee->end_date,
 
             'description' => 'required',
-            'expense_document' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            //'expense_document' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'expense_document' => 'required|file|mimes:jpg,jpeg,png,gif,pdf|max:4096',
         ],[
 'expense_date.after_or_equal' => 'Le champ date de dépense doit ètre une date postérieure ou égale à :date',
 'expense_date.before_or_equal' => 'Le champ date de dépense doit ètre une date antérieure ou égale à :date'
@@ -57,7 +59,8 @@ class TourneeExpenseController extends Controller
         if ($request->hasFile('expense_document')) {
             // Store the image in 'storage/app/public/profile_pictures'
             $file = $request->file('expense_document');
-            $filename = $request->input('tournee_id') . '-'. $expense->id . '.'.$file->getClientOriginalExtension(); // e.g. 1609459200.jpeg
+ //           $filename = $request->input('tournee_id') . '-'. $expense->id . '.'.$file->getClientOriginalExtension(); // e.g. 1609459200.jpeg
+            $filename = $expense->tournee_id . '-'. $expense->id . '.'.$file->getClientOriginalExtension(); // e.g. 1609459200.jpeg
 
             $path = $file->storeAs('expense_documents', $filename, 'public');
 
@@ -65,12 +68,13 @@ class TourneeExpenseController extends Controller
             $expense->expense_document = $path;
             $expense->save();
         }
-        return redirect()->route('tournees.m_create',$request->input('tournee_id'));
+   //     return redirect()->route('tournees.m_create',$request->input('tournee_id'));
+        return redirect()->route('tournees.m_create',$expense->tournee_id);
     }
-    public function destroy(TourneeExpense $expense)
+    public function destroy(TourneeExpense $tournee_expense)
     {
-        $tournee_id = $expense->tournee_id;
-        $expense->delete();
+        $tournee_id = $tournee_expense->tournee_id;
+        $tournee_expense->delete();
         return redirect()->route('tournees.m_create',$tournee_id);
     }
 

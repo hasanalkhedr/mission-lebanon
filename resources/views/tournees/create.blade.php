@@ -151,10 +151,10 @@
         <x-label class="w-1/3 inline-flex">
             Prise en charge des frais de transport<span class="text-red-500">*</span>
         </x-label>
-        <input required @checked(old('charge') == 1) type="radio" value="1" name="charge"
+        <input required @checked(old('charge',1) == 1) type="radio" value="1" name="charge"
             class="w-4 h-4 text-blue-600 bg-gray-100 border border-blue-700 focus:ring-blue-500 dark:focus:ring-blue-600 mr-0 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
         <label class="ms-1 text-sm font-medium text-blue-500 dark:text-gray-500 mr-5">OUI</label>
-        <input required @checked(old('charge') == 0) type="radio" value="0" name="charge"
+        <input required @checked(old('charge',1) == 0) type="radio" value="0" name="charge"
             class="w-4 h-4 text-blue-600 bg-gray-100 border border-blue-700 focus:ring-blue-500 dark:focus:ring-blue-600 mr-0 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
         <label class="ms-1 text-sm font-medium text-blue-400 dark:text-gray-500 mr-10">NON</label>
     </div>
@@ -163,11 +163,11 @@
         <x-label class="w-1/3 inline-flex">
             Prise en charge des indemnités journalières de mission<span class="text-red-500">*</span>
         </x-label>
-        <input required @checked(old('ijm') == 1) type="radio" value="1" name="ijm" id="ijm_yes"
+        <input required @checked(old('ijm', 1) == 1) type="radio" value="1" name="ijm" id="ijm_yes"
             @change="toggleActualFees($event)"
             class="w-4 h-4 text-blue-600 bg-gray-100 border border-blue-700 focus:ring-blue-500 dark:focus:ring-blue-600 mr-0 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
         <label for="ijm_yes" class="ms-1 text-sm font-medium mr-5 text-blue-400 dark:text-gray-500">OUI</label>
-        <input required @checked(old('ijm') == 0) type="radio" value="0" name="ijm" id="ijm_no"
+        <input required @checked(old('ijm', 1) == 0) type="radio" value="0" name="ijm" id="ijm_no"
             @change="toggleActualFees($event)"
             class="w-4 h-4 text-blue-600 bg-gray-100 border border-blue-700 focus:ring-blue-500 dark:focus:ring-blue-600 mr-0 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
         <label for="ijm_no" class="ms-1 text-sm font-medium text-blue-400 dark:text-gray-500 mr-5">NON</label>
