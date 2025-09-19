@@ -8,6 +8,7 @@ use App\Models\MissionOrder;
 use App\Models\Bareme;
 use App\Notifications\MemoireMissionOrderLevelNotification;
 use App\Notifications\MissionOrderLevelNotification;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -107,6 +108,31 @@ class MissionOrderController extends Controller
             'charge' => 'required',
             'ijm' => 'required',
             'assurance' => 'required',
+            'advance' => [
+                'nullable',
+                'numeric',
+                'min:0',
+                function ($attribute, $value, $fail) use ($request) {
+                    $bareme = Bareme::find($request->bareme_id);
+                    $start = Carbon::parse($request->start_date . ' ' . $request->start_time);
+                    $end = Carbon::parse($request->end_date . ' ' . $request->end_time);
+                    // Calculate full calendar days difference
+                    $diffDays = abs($end->diffInDays($start));
+
+                    $totalDays = $diffDays;
+
+                    // Add extra day if start time is before 5 AM
+                    if ($start->hour < 5) {
+                        $totalDays += 1;
+                    }
+
+                    $maxAdvance = $totalDays * $bareme->accomodation_cost * 0.75;
+                    $maxAdvanceInLocal = $maxAdvance ;
+                    if ($value > $maxAdvanceInLocal) {
+                        $fail("Le montant dépasse 75% du total hébergement (max: " . number_format($maxAdvanceInLocal, 2) . $bareme->currency.")");
+                    }
+                }
+            ],
 
         ]);
         $ids = array_column(Bareme::where('pays', 'like', '%France%')->get('id')->toArray(), 'id');
@@ -205,6 +231,31 @@ class MissionOrderController extends Controller
             'charge' => 'required',
             'ijm' => 'required',
             'assurance' => 'required',
+            'advance' => [
+                'nullable',
+                'numeric',
+                'min:0',
+                function ($attribute, $value, $fail) use ($request) {
+                    $bareme = Bareme::find($request->bareme_id);
+                    $start = Carbon::parse($request->start_date . ' ' . $request->start_time);
+                    $end = Carbon::parse($request->end_date . ' ' . $request->end_time);
+                    // Calculate full calendar days difference
+                    $diffDays = abs($end->diffInDays($start));
+
+                    $totalDays = $diffDays;
+
+                    // Add extra day if start time is before 5 AM
+                    if ($start->hour < 5) {
+                        $totalDays += 1;
+                    }
+
+                    $maxAdvance = $totalDays * $bareme->accomodation_cost * 0.75;
+                    $maxAdvanceInLocal = $maxAdvance ;
+                    if ($value > $maxAdvanceInLocal) {
+                        $fail("Le montant dépasse 75% du total hébergement (max: " . number_format($maxAdvanceInLocal, 2) . $bareme->currency.")");
+                    }
+                }
+            ],
         ]);
         $ids = array_column(Bareme::where('pays', 'like', '%France%')->get('id')->toArray(), 'id');
         $bareme_id = $request->input('bareme_id');
@@ -364,7 +415,7 @@ class MissionOrderController extends Controller
         $request->validate([
             'no_ded_accomodation' => 'required|numeric',
             'no_ded_meals' => 'required|numeric',
-            'advance' => 'required|numeric',
+            //'advance' => 'required|numeric',
             'total_amount' => 'required|numeric',
             'memor_date' => 'required|date|after_or_equal:end_date',
         ]);
@@ -442,7 +493,7 @@ class MissionOrderController extends Controller
         $missionOrder->update([
             'no_ded_accomodation' => 0,
             'no_ded_meals' => 0,
-            'advance' => 0,
+            //'advance' => 0,
             'total_amount' => 0,
             'memor_status' => null,
         ]);

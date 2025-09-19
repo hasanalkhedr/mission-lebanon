@@ -101,6 +101,10 @@
                 </thead>
                 <tbody>
                     <tr>
+                        <td class="w-2/3">Demande d'avance::</td>
+                        <td class="w-1/3">{{ $missionOrder->advance >0 ? $missionOrder->advance : 'NON' }} {{$missionOrder->bareme->currency}}</td>
+                    </tr>
+                    <tr>
                         <td class="w-2/3">Prise en charge des frais de transport :</td>
                         <td class="w-1/3">{{ $missionOrder->charge == 1 ? 'OUI' : 'NON' }}</td>
                     </tr>
