@@ -1,18 +1,18 @@
 @extends('layouts.app')
 @section('title', $missionOrder->order_number . '-' . $missionOrder->employee->first_name . ' ' . $missionOrder->employee->last_name)
 @section('content')
-    <div id="report-content" class="scale-content">
-        <div class="report-page" style="width: 210mm; height: 297mm; margin: 0 auto; padding: 2mm 8mm; box-sizing: border-box;">
+    <div id="report-content">
+        <div class="report-page" style="width: 210mm; height: 297mm; margin: 0 auto; padding: 8mm; box-sizing: border-box;">
             <!-- Header -->
-            <div class="flex justify-between items-start mb-[2px]">
-                <x-application-logo class="h-12 w-2/5" />
-                <div class="text-right w-3/5">
+            <div class="flex justify-between items-start mb-2">
+                <x-application-logo class="h-16" />
+                <div class="text-right">
                     <p>Beyrouth, {{ $missionOrder->memor_date->format('d/m/Y') }}</p>
                 </div>
             </div>
 
             <!-- Title -->
-            <h1 class="text-2xl font-bold text-center mb-[2px]">MÉMOIRE DE FRAIS</h1>
+            <h1 class="text-2xl font-bold text-center mb-2">MÉMOIRE DE FRAIS</h1>
 
             <!-- Mission Info -->
             <table class="table-auto w-full text-left">
@@ -212,6 +212,7 @@
                                 </tr>
                             </table>
                         </td>
+                    </tr>
                 </tbody>
             </table>
             <table class="table-auto w-full text-left">
@@ -249,24 +250,24 @@
             <table class="table-auto w-full text-left">
                 <thead>
                     <tr class="bg-blue-200">
-                        <th class="w-5/12 px-4">Signature du bénéficiaire</th>
-                        <th class="w-7/12 px-12">Signature de l'autorité compétente</th>
+                        <th class="w-5/12 pl-4">Signature du bénéficiaire</th>
+                        <th class="w-7/12 pl-12 ">Signature de l'autorité compétente</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="w-6/12">
+                        <td class="w-7/12">
                             <span>Atteste l'effectitivité des dépenses exposées</span>
                         </td>
-                        <td class="w-6/12 text-center">
+                        <td class="w-5/12 text-center">
                             <span>Certifié exact,</span>
                         </td>
                     </tr>
                     <tr>
-                        <td class="w-5/12 pb-3">
+                        <td class="w-8/12 pb-2">
                             <span>ci-dessus, en demande le remboursement,</span>
                         </td>
-                        <td class="w-7/12 text-center">
+                        <td class="w-4/12 text-center">
                             <span></span>
                         </td>
                     </tr>
@@ -279,20 +280,37 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="w-5/12">
+                        <td class="w-6/12">
                             <span class="font-light text-md  w-16 text-center">
                                 {{ $missionOrder->employee->first_name }} {{ $missionOrder->employee->last_name }},
                                 {{ $missionOrder->employee->position }}
                             </span>
                         </td>
-                        <td class="w-7/12 text-center">
-                            <span class="font-light text-md  w-16 text-center">COCAC - Directrice de l'IFL</span>
+                        <td class="w-6/12 text-center">
+                            <span class="font-light text-md  w-16 text-center">COCAC - Directrice de l'IF</span>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
+
+        <!-- Documents - each will be on separate pages -->
+        @foreach ($missionOrder->expenses as $expense)
+            <div class="document-page" style="page-break-before: always; width: 210mm;">
+                <h4 class="text-center font-bold mb-1">Document: {{ $expense->description }}</h4>
+                <div class="flex justify-center">
+                    @if (pathinfo($expense->expense_document, PATHINFO_EXTENSION) === 'pdf')
+                        <div id="pdf-viewer-{{ $expense->id }}" class="pdf-container"
+                            style="width: 100%; height: 240mm;"></div>
+                    @else
+                        <img src="{{ asset('storage/' . $expense->expense_document) }}"
+                            style="max-width: 100%; max-height: 240mm; object-fit: contain;" alt="Expense Document">
+                    @endif
+                </div>
+            </div>
+        @endforeach
     </div>
+
     <!-- Action Buttons -->
     <div class="flex justify-center space-x-4 mb-8 no-print">
         <button onclick="window.print()"
@@ -313,42 +331,47 @@
             {{ __('Save as PDF file') }}
         </button>
     </div>
+
     <style>
         @media print {
-            html,
             body {
-                width: 210mm;
-                height: 297mm;
                 margin: 0 !important;
                 padding: 0 !important;
                 background: white !important;
             }
+
             .report-page {
-                width: 190mm !important;
-                height: 277mm !important;
-                margin: 10mm auto !important;
-                page-break-after: avoid;
-                page-break-inside: avoid;
+                width: 210mm !important;
+                height: 297mm !important;
+                margin: 0 auto !important;
+                padding: 8mm !important;
+                transform: scale(1) !important;
             }
+
+            .document-page {
+                page-break-before: always !important;
+                width: 210mm !important;
+                height: 297mm !important;
+            }
+
             .no-print {
                 display: none !important;
             }
-            .scale-content {
-                transform-origin: top left;
-                width: 100%;
-                height: 100%;
-            }
         }
+
         /* Screen styles */
         .report-page {
             background: white;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin: 0;
+            margin: 20px auto;
         }
-        .report-page {
-            overflow: hidden;
-            /* Prevent any hidden overflow */
+
+        .document-page {
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
         }
+
         .btn-blue {
             background: #2563eb;
             color: white;
@@ -358,6 +381,7 @@
             display: flex;
             align-items: center;
         }
+
         .btn-green {
             background: #059669;
             color: white;
@@ -368,9 +392,54 @@
             align-items: center;
         }
     </style>
+
     <script>
+        function renderPDF(pdfUrl, containerId) {
+            const container = document.getElementById(containerId);
+
+            pdfjsLib.getDocument(pdfUrl).promise.then(function(pdf) {
+                // Get first page
+                pdf.getPage(1).then(function(page) {
+                    const viewport = page.getViewport({
+                        scale: 1.0
+                    });
+                    const canvas = document.createElement('canvas');
+                    canvas.className = 'pdf-page';
+                    container.appendChild(canvas);
+
+                    // Calculate scale to fit container width
+                    const desiredWidth = container.clientWidth;
+                    const scale = desiredWidth / viewport.width;
+                    const scaledViewport = page.getViewport({
+                        scale
+                    });
+
+                    // Set canvas dimensions
+                    canvas.height = scaledViewport.height;
+                    canvas.width = scaledViewport.width;
+
+                    // Render PDF page
+                    page.render({
+                        canvasContext: canvas.getContext('2d'),
+                        viewport: scaledViewport
+                    });
+                });
+            });
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize all PDF viewers
+            @foreach ($missionOrder->expenses as $expense)
+                @if (pathinfo($expense->expense_document, PATHINFO_EXTENSION) === 'pdf')
+                    renderPDF(
+                        "{{ asset('storage/' . $expense->expense_document) }}",
+                        "pdf-viewer-{{ $expense->id }}"
+                    );
+                @endif
+            @endforeach
+        });
+
         document.getElementById("download-pdf").addEventListener("click", async function() {
-            var element = document.getElementById('report-content'); // The element you want to print
+            const element = document.getElementById('report-content');
             const loading = createLoadingIndicator();
 
             try {
@@ -416,69 +485,64 @@
         }
 
         async function generatePDF(element, customOptions = {}) {
-    try {
-        updateProgress(10, "Preparing content...");
+            try {
+                updateProgress(10, "Preparing content...");
 
-        // First get the height of the content
-        const contentHeight = element.scrollHeight;
-        const pageHeight = 277 * 3.78; // 277mm in pixels (approx)
-
-        // Calculate scale factor if content is taller than page
-        let scale = 1;
-        if (contentHeight > pageHeight) {
-            scale = pageHeight / contentHeight * 0.95; // 95% to add some margin
-        }
-
-        const defaultOptions = {
-            margin: 0,
-            filename: `Mémoire-{{ $missionOrder->order_number }}-{{ $missionOrder->employee->first_name }}_{{ $missionOrder->employee->last_name }}.pdf`,
-            html2canvas: {
-                scale: 2,
-                useCORS: true,
-                windowHeight: element.scrollHeight,
-                onclone: (clonedDoc) => {
-                    // Apply scaling to the cloned document
-                    const reportContent = clonedDoc.getElementById('report-content');
-                    if (reportContent) {
-                        reportContent.style.transform = `scale(${scale})`;
-                        reportContent.style.width = `${100/scale}%`;
-                        reportContent.style.height = `${100/scale}%`;
+                const defaultOptions = {
+                    margin: 1,
+                    filename: `Mémoire-{{ $missionOrder->order_number }}-{{ $missionOrder->employee->first_name }}_{{ $missionOrder->employee->last_name }}.pdf`,
+                    image: {
+                        type: 'jpeg',
+                        quality: 0.98
+                    },
+                    html2canvas: {
+                        scale: 2,
+                        useCORS: true,
+                        allowTaint: true,
+                        scrollX: 0,
+                        scrollY: 0,
+                        onclone: (clonedDoc) => {
+                            clonedDoc.querySelectorAll('.no-print').forEach(el => el.remove());
+                        },
+                        logging: true
+                    },
+                    jsPDF: {
+                        unit: 'mm',
+                        format: 'a4',
+                        orientation: 'portrait'
+                    },
+                    pagebreak: {
+                        before: '.document-page'
                     }
-                }
-            },
-            jsPDF: {
-                unit: 'mm',
-                format: 'a4',
-                orientation: 'portrait',
+                };
+
+                const options = {
+                    ...defaultOptions,
+                    ...customOptions
+                };
+
+                updateProgress(30, "Generating PDF...");
+
+                // Create a promise that resolves when the PDF is generated
+                await new Promise((resolve, reject) => {
+                    html2pdf()
+                        .set(options)
+                        .from(element)
+                        .save()
+                        .then(() => {
+                            updateProgress(90, "Finalizing PDF...");
+                            setTimeout(() => {
+                                updateProgress(100, "Done!");
+                                resolve();
+                            }, 500);
+                        })
+                        .catch(reject);
+                });
+            } catch (error) {
+                console.error("PDF generation failed:", error);
+                updateProgress(0, "Failed to generate PDF");
+                throw error; // Re-throw if you want calling code to handle it
             }
-        };
-
-        const options = {
-            ...defaultOptions,
-            ...customOptions
-        };
-
-        updateProgress(30, "Generating PDF...");
-
-        await new Promise((resolve, reject) => {
-            html2pdf()
-                .set(options)
-                .from(element)
-                .save()
-                .then(() => {
-                    updateProgress(90, "Finalizing PDF...");
-                    setTimeout(() => {
-                        updateProgress(100, "Done!");
-                        resolve();
-                    }, 500);
-                })
-                .catch(reject);
-        });
-    } catch (error) {
-        console.error("PDF generation failed:", error);
-        updateProgress(0, "Failed to generate PDF");
-        throw error;
-    }
-}
+        }
     </script>
 @endsection
