@@ -252,7 +252,7 @@ const maxAdvanceInLocal = maxAdvance ;
                 // Function to update max advance display
                 function updateMaxAdvance() {
                     const maxAdvance = calculateMaxAdvance();
-                    maxAdvanceSpan.textContent = maxAdvance + ' Roupie indienne (INR)';
+                    maxAdvanceSpan.textContent = maxAdvance + ' EURO';
                 }
 
                 // Function to validate advance amount
