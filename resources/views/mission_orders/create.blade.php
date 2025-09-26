@@ -165,7 +165,7 @@
                 <x-label>
                     Montant de l'avance (dans la monnaie barème sélectionnée)<span class="text-red-500">*</span>
                 </x-label>
-                <x-text-input name="advance" value="{{ old('advance') }}" id="advance_amount_input" />
+                <x-text-input name="advance" value="{{ old('advance') }}" id="advance_amount_input" type="number" step="0.1"/>
                 <small class="text-gray-500">Maximum autorisé: <span id="max_advance">0</span> (75% du total
                     hébergement)</small>
                 <p id="advance_error" class="text-red-500 hidden">Le montant demandé dépasse 75% du total hébergement.</p>
