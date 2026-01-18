@@ -125,12 +125,12 @@
                     <tbody>
                         <tr>
                             <td colspan="2" class="w-full px-28 pt-2 pb-2 justify-end items-end text-right">
-                                <span class="font-bold text-lg w-24 text-center">SCIORTINO Sabine</span>
+                                <span class="font-bold text-lg w-24 text-center">Marion Eynard</span>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2" class="w-full px-24 pt-0 pb-40 text-right">
-                                <span class="font-light text-md  w-16 text-center">COCAC - Directrice de l'IFL</span>
+                                <span class="font-light text-md  w-16 text-center">Directrice intérimaire de l'IFL</span>
                             </td>
                         </tr>
                     </tbody>

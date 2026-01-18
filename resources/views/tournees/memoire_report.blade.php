@@ -274,7 +274,7 @@
                             <span></span>
                         </td>
                         <td class="w-7/12 text-center">
-                            <span class="font-bold text-lg w-24 text-center">SCIORTINO Sabine</span>
+                            <span class="font-bold text-lg w-24 text-center">Marion Eynard</span>
                         </td>
                     </tr>
                     <tr>
@@ -285,7 +285,7 @@
                             </span>
                         </td>
                         <td class="w-6/12 text-center">
-                            <span class="font-light text-md  w-16 text-center">COCAC - Directrice de l'IF</span>
+                            <span class="font-light text-md  w-16 text-center">Directrice intérimaire de l'IFL</span>
                         </td>
                     </tr>
                 </tbody>
