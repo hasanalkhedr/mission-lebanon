@@ -279,6 +279,7 @@ const maxAdvanceInLocal = maxAdvance ;
                     } else {
                         advanceAmountContainer.style.display = 'none';
                         advanceAmountInput.required = false;
+                        advanceAmountInput.value = 0;
                     }
                 }
 
