@@ -165,7 +165,7 @@
                 <x-label>
                     Montant de l'avance (dans la monnaie barème sélectionnée)<span class="text-red-500">*</span>
                 </x-label>
-                <x-text-input name="advance" value="{{ old('advance', 0) }}" id="advance_amount_input" type="number" step="0.1"/>
+                <x-text-input name="advance" value="0" id="advance_amount_input" type="number" step="0.1"/>
                 <small class="text-gray-500">Maximum autorisé: <span id="max_advance">0</span> (75% du total
                     hébergement)</small>
                 <p id="advance_error" class="text-red-500 hidden">Le montant demandé dépasse 75% du total hébergement.</p>
@@ -191,6 +191,7 @@
                     $baremes->keyBy('id')->map(function ($item) {
                         return [
                             'accomodation_cost' => $item->accomodation_cost,
+                            'meal_cost' => $item->meal_cost,
                             'currency' => $item->currency,
                         ];
                     }),
@@ -198,45 +199,96 @@
 
                 // Function to calculate days difference with 5 AM rule
                 function calculateDays() {
-                    if (!startDateInput.value || !endDateInput.value) return 0;
+                    if (!startDateInput.value || !endDateInput.value) {
+                        return {
+                            no_accomodation: 0,
+                            no_meals: 0
+                        };
+                    }
 
+                    // Parse dates and times
                     const startDate = new Date(`${startDateInput.value}T${startTimeInput.value || '00:00'}`);
                     const endDate = new Date(`${endDateInput.value}T${endTimeInput.value || '00:00'}`);
 
-                    // Calculate full calendar days difference
+                    // Get timezone offset in minutes
                     const timezoneOffset = startDate.getTimezoneOffset() * 60000;
-                    const normalizedStart = new Date(startDate - timezoneOffset);
-                    const normalizedEnd = new Date(endDate - timezoneOffset);
 
-                    // Get date parts only (ignoring time)
-                    const startDateOnly = new Date(normalizedStart.toISOString().split('T')[0]);
-                    const endDateOnly = new Date(normalizedEnd.toISOString().split('T')[0]);
+                    // Normalize to UTC for date-only comparison (matches Carbon's behavior better)
+                    const normalizedStart = new Date(startDate.getTime() - timezoneOffset);
+                    const normalizedEnd = new Date(endDate.getTime() - timezoneOffset);
 
-                    // Difference in full calendar days
-                    const diffDays = Math.round((endDateOnly - startDateOnly) / (1000 * 60 * 60 * 24));
+                    // Create date-only objects (set to midnight UTC)
+                    const startDateOnly = new Date(Date.UTC(
+                        normalizedStart.getUTCFullYear(),
+                        normalizedStart.getUTCMonth(),
+                        normalizedStart.getUTCDate()
+                    ));
 
+                    const endDateOnly = new Date(Date.UTC(
+                        normalizedEnd.getUTCFullYear(),
+                        normalizedEnd.getUTCMonth(),
+                        normalizedEnd.getUTCDate()
+                    ));
 
-                    let totalDays = diffDays;
+                    // Calculate difference in days
+                    let no_accomodation = Math.round((endDateOnly - startDateOnly) / (1000 * 60 * 60 * 24));
 
-                    // Add extra day if start time is before 5 AM
-                    if (startDate.getHours() < 5) {
-                        totalDays += 1;
+                    // Get time components in local time
+                    const startHours = startDate.getHours();
+                    const startMinutes = startDate.getMinutes();
+                    const endHours = endDate.getHours();
+                    const endMinutes = endDate.getMinutes();
+
+                    // Convert to minutes since midnight for easier comparison
+                    const startTimeMinutes = startHours * 60 + startMinutes;
+                    const endTimeMinutes = endHours * 60 + endMinutes;
+
+                    // Store original no_accomodation for meal calculation
+                    const baseDaysDiff = no_accomodation;
+
+                    // Start day condition (before 5:00 AM = 300 minutes) - for accommodation
+                    if (startTimeMinutes <= 300) { // 5:00 AM = 5 * 60 = 300 minutes
+                        no_accomodation += 1;
                     }
 
-                    return totalDays;
-                }
+                    // Calculate meals
+                    // Base meals: 2 * (days - 1)
+                    let no_meals = 2 * (baseDaysDiff - 1);
 
+                    // Start time meals
+                    if (startTimeMinutes <= 12 * 60) { // 12:00 PM = 720 minutes
+                        no_meals += 2;
+                    } else if (startTimeMinutes <= 19 * 60) { // 7:00 PM = 1140 minutes
+                        no_meals += 1;
+                    }
+
+                    // End time meals
+                    if (endTimeMinutes >= 21 * 60) { // 9:00 PM = 1260 minutes
+                        no_meals += 2;
+                    } else if (endTimeMinutes >= 14 * 60) { // 2:00 PM = 840 minutes
+                        no_meals += 1;
+                    }
+
+                    return {
+                        no_accomodation: no_accomodation,
+                        no_meals: no_meals
+                    };
+                }
                 // Function to calculate max advance amount
                 function calculateMaxAdvance() {
                     const selectedBareme = baremeSelect.value;
                     if (!selectedBareme) return 0;
 
-                    const days = calculateDays();
-                    const dailyCost = baremes[selectedBareme]?.accomodation_cost || 0;
-                    const totalCost = days * dailyCost;
+                    const counts = calculateDays(); // Returns { no_accomodation, no_meals }
+                    const accomodationCost = baremes[selectedBareme]?.accomodation_cost || 0;
+                    const mealCost = baremes[selectedBareme]?.meal_cost || 0;
+                    const currency = baremes[selectedBareme]?.currency || '';
+
+                    // Calculate total based on accommodations and meals
+                    const totalCost = (counts.no_accomodation * accomodationCost) + (counts.no_meals * mealCost);
                     const maxAdvance = totalCost * 0.75; // 75% of total
-const maxAdvanceInLocal = maxAdvance ;
-                    return maxAdvanceInLocal.toFixed(2);
+
+                    return maxAdvance.toFixed(2);
                 }
 
                 // Function to update max advance display

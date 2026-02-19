@@ -113,23 +113,48 @@ class MissionOrderController extends Controller
                 'numeric',
                 'min:0',
                 function ($attribute, $value, $fail) use ($request) {
+                    if($request->ijm == 1) {
                     $bareme = Bareme::find($request->bareme_id);
                     $start = Carbon::parse($request->start_date . ' ' . $request->start_time);
                     $end = Carbon::parse($request->end_date . ' ' . $request->end_time);
-                    // Calculate full calendar days difference
-                    $diffDays = abs($end->diffInDays($start));
 
-                    $totalDays = $diffDays;
+                    $startDateOnly = $start->copy()->startOfDay();
+                    $endDateOnly = $end->copy()->startOfDay();
 
-                    // Add extra day if start time is before 5 AM
-                    if ($start->hour < 5) {
-                        $totalDays += 1;
+                    $startTimeOnly = $start->format('H:i');
+                    $endTimeOnly = $end->format('H:i');
+
+                    $diffDays = abs($endDateOnly->diffInDays($startDateOnly));
+
+                    $no_accomodation = $startDateOnly->diffInDays($endDateOnly);
+
+                    if (strtotime($startTimeOnly) <= strtotime('05:00 AM')) {
+                        $no_accomodation = $no_accomodation + 1;
                     }
 
-                    $maxAdvance = $totalDays * $bareme->accomodation_cost * 0.75;
-                    $maxAdvanceInLocal = $maxAdvance ;
-                    if ($value > $maxAdvanceInLocal) {
-                        $fail("Le montant dépasse 75% du total hébergement (max: " . number_format($maxAdvanceInLocal, 2) . $bareme->currency.")");
+                    //calculate meals
+                    $no_meals = 2 * ($startDateOnly->diffInDays($endDateOnly) - 1);
+                    if (strtotime($startTimeOnly) <= strtotime('12:00 PM')) {
+                        $no_meals = $no_meals + 2;
+                    } else if (strtotime($startTimeOnly) <= strtotime('07:00 PM')) {
+                        $no_meals = $no_meals + 1;
+                    }
+                    if (strtotime($endTimeOnly) >= strtotime('09:00 PM')) {
+                        $no_meals = $no_meals + 2;
+                    } else if (strtotime($endTimeOnly) >= strtotime('02:00 PM')) {
+                        $no_meals = $no_meals + 1;
+                    }
+
+
+                        $maxAdvance = $no_accomodation * $bareme->accomodation_cost + $no_meals * $bareme->meal_cost;
+                        $maxAdvanceInLocal = $maxAdvance * 0.75 ;
+                        if ($value > $maxAdvanceInLocal) {
+                            $fail("Le montant dépasse 75% du total hébergement (max: " . number_format($maxAdvanceInLocal, 2) . $bareme->currency.")");
+                        }
+                    } else {
+                        if($value > 0) {
+                            $fail("Vous ne pouvez pas demander d'avance si vous n'avez pas demandé de couverture pour les indemnités journalières liées aux tâches.");
+                        }
                     }
                 }
             ],
@@ -236,23 +261,48 @@ class MissionOrderController extends Controller
                 'numeric',
                 'min:0',
                 function ($attribute, $value, $fail) use ($request) {
+                    if($request->ijm == 1) {
                     $bareme = Bareme::find($request->bareme_id);
                     $start = Carbon::parse($request->start_date . ' ' . $request->start_time);
                     $end = Carbon::parse($request->end_date . ' ' . $request->end_time);
-                    // Calculate full calendar days difference
-                    $diffDays = abs($end->diffInDays($start));
 
-                    $totalDays = $diffDays;
+                    $startDateOnly = $start->copy()->startOfDay();
+                    $endDateOnly = $end->copy()->startOfDay();
 
-                    // Add extra day if start time is before 5 AM
-                    if ($start->hour < 5) {
-                        $totalDays += 1;
+                    $startTimeOnly = $start->format('H:i');
+                    $endTimeOnly = $end->format('H:i');
+
+                    $diffDays = abs($endDateOnly->diffInDays($startDateOnly));
+
+                    $no_accomodation = $startDateOnly->diffInDays($endDateOnly);
+
+                    if (strtotime($startTimeOnly) <= strtotime('05:00 AM')) {
+                        $no_accomodation = $no_accomodation + 1;
                     }
 
-                    $maxAdvance = $totalDays * $bareme->accomodation_cost * 0.75;
-                    $maxAdvanceInLocal = $maxAdvance ;
-                    if ($value > $maxAdvanceInLocal) {
-                        $fail("Le montant dépasse 75% du total hébergement (max: " . number_format($maxAdvanceInLocal, 2) . $bareme->currency.")");
+                    //calculate meals
+                    $no_meals = 2 * ($startDateOnly->diffInDays($endDateOnly) - 1);
+                    if (strtotime($startTimeOnly) <= strtotime('12:00 PM')) {
+                        $no_meals = $no_meals + 2;
+                    } else if (strtotime($startTimeOnly) <= strtotime('07:00 PM')) {
+                        $no_meals = $no_meals + 1;
+                    }
+                    if (strtotime($endTimeOnly) >= strtotime('09:00 PM')) {
+                        $no_meals = $no_meals + 2;
+                    } else if (strtotime($endTimeOnly) >= strtotime('02:00 PM')) {
+                        $no_meals = $no_meals + 1;
+                    }
+
+
+                        $maxAdvance = $no_accomodation * $bareme->accomodation_cost + $no_meals * $bareme->meal_cost;
+                        $maxAdvanceInLocal = $maxAdvance * 0.75 ;
+                        if ($value > $maxAdvanceInLocal) {
+                            $fail("Le montant dépasse 75% du total hébergement (max: " . number_format($maxAdvanceInLocal, 2) . $bareme->currency.")");
+                        }
+                    } else {
+                        if($value > 0) {
+                            $fail("Vous ne pouvez pas demander d'avance si vous n'avez pas demandé de couverture pour les indemnités journalières liées aux tâches.");
+                        }
                     }
                 }
             ],

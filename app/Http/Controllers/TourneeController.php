@@ -107,31 +107,31 @@ class TourneeController extends Controller
             'end_time' => 'required|date_format:H:i',
             'charge' => 'required',
             'ijm' => 'required',
-            'advance' => [
-                'nullable',
-                'numeric',
-                'min:0',
-                function ($attribute, $value, $fail) use ($request) {
-                    $bareme = Bareme::find($request->bareme_id);
-                    $start = Carbon::parse($request->start_date . ' ' . $request->start_time);
-                    $end = Carbon::parse($request->end_date . ' ' . $request->end_time);
-                    // Calculate full calendar days difference
-                    $diffDays = abs($end->diffInDays($start));
+            // 'advance' => [
+            //     'nullable',
+            //     'numeric',
+            //     'min:0',
+            //     function ($attribute, $value, $fail) use ($request) {
+            //         $bareme = Bareme::find($request->bareme_id);
+            //         $start = Carbon::parse($request->start_date . ' ' . $request->start_time);
+            //         $end = Carbon::parse($request->end_date . ' ' . $request->end_time);
+            //         // Calculate full calendar days difference
+            //         $diffDays = abs($end->diffInDays($start));
 
-                    $totalDays = $diffDays;
+            //         $totalDays = $diffDays;
 
-                    // Add extra day if start time is before 5 AM
-                    if ($start->hour < 5) {
-                        $totalDays += 1;
-                    }
+            //         // Add extra day if start time is before 5 AM
+            //         if ($start->hour < 5) {
+            //             $totalDays += 1;
+            //         }
 
-                    $maxAdvance = $totalDays * $bareme->accomodation_cost * 0.75;
-                    $maxAdvanceInLocal = $maxAdvance ;
-                    if ($value > $maxAdvanceInLocal) {
-                        $fail("Le montant dépasse 75% du total hébergement (max: " . number_format($maxAdvanceInLocal, 2) . $bareme->currency.")");
-                    }
-                }
-            ],
+            //         $maxAdvance = $totalDays * $bareme->accomodation_cost * 0.75;
+            //         $maxAdvanceInLocal = $maxAdvance ;
+            //         if ($value > $maxAdvanceInLocal) {
+            //             $fail("Le montant dépasse 75% du total hébergement (max: " . number_format($maxAdvanceInLocal, 2) . $bareme->currency.")");
+            //         }
+            //     }
+            // ],
 
         ]);
         $action = $request->input('action');
@@ -218,31 +218,31 @@ class TourneeController extends Controller
             'end_time' => 'required',
             'charge' => 'required',
             'ijm' => 'required',
-            'advance' => [
-                'nullable',
-                'numeric',
-                'min:0',
-                function ($attribute, $value, $fail) use ($request) {
-                    $bareme = Bareme::find($request->bareme_id);
-                    $start = Carbon::parse($request->start_date . ' ' . $request->start_time);
-                    $end = Carbon::parse($request->end_date . ' ' . $request->end_time);
-                    // Calculate full calendar days difference
-                    $diffDays = abs($end->diffInDays($start));
+            // 'advance' => [
+            //     'nullable',
+            //     'numeric',
+            //     'min:0',
+            //     function ($attribute, $value, $fail) use ($request) {
+            //         $bareme = Bareme::find($request->bareme_id);
+            //         $start = Carbon::parse($request->start_date . ' ' . $request->start_time);
+            //         $end = Carbon::parse($request->end_date . ' ' . $request->end_time);
+            //         // Calculate full calendar days difference
+            //         $diffDays = abs($end->diffInDays($start));
 
-                    $totalDays = $diffDays;
+            //         $totalDays = $diffDays;
 
-                    // Add extra day if start time is before 5 AM
-                    if ($start->hour < 5) {
-                        $totalDays += 1;
-                    }
+            //         // Add extra day if start time is before 5 AM
+            //         if ($start->hour < 5) {
+            //             $totalDays += 1;
+            //         }
 
-                    $maxAdvance = $totalDays * $bareme->accomodation_cost * 0.75;
-                    $maxAdvanceInLocal = $maxAdvance ;
-                    if ($value > $maxAdvanceInLocal) {
-                        $fail("Le montant dépasse 75% du total hébergement (max: " . number_format($maxAdvanceInLocal, 2) . $bareme->currency.")");
-                    }
-                }
-            ],
+            //         $maxAdvance = $totalDays * $bareme->accomodation_cost * 0.75;
+            //         $maxAdvanceInLocal = $maxAdvance ;
+            //         if ($value > $maxAdvanceInLocal) {
+            //             $fail("Le montant dépasse 75% du total hébergement (max: " . number_format($maxAdvanceInLocal, 2) . $bareme->currency.")");
+            //         }
+            //     }
+            // ],
         ]);
         $action = $request->input('action');
         $status = '';
